@@ -1,55 +1,52 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
-// Layouts
 import Layout from './components/Layout';
+import PrivateRoute from './components/PrivateRoute'; // <--- Importe o Segurança
 
 // Páginas Admin
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard'; // <--- IMPORTANDO O ARQUIVO REAL AGORA
+import Dashboard from './pages/Dashboard';
 import Chamados from './pages/Chamados';
 import Agendamentos from './pages/Agendamentos';
+import NovoChamadoAdmin from './pages/NovoChamadoAdmin';
 
 // Páginas Usuário
 import UserDashboard from './pages/UserDashboard';
 import NovoChamadoUser from './pages/NovoChamadoUser';
 import NovoAgendamentoUser from './pages/NovoAgendamentoUser';
-import NovoChamadoAdmin from './pages/NovoChamadoAdmin';
-import Monitor from './pages/Monitor';
 
-// Páginas Placeholder (Só Monitor continua em construção por enquanto)
-const NovoChamado = () => <div style={{padding: 20}}><h1>Novo Chamado Admin (Em construção)</h1></div>;
+const Monitor = () => <div style={{padding: 20}}><h1>Monitor (Em construção)</h1></div>;
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* --- ROTA PÚBLICA (LOGIN) --- */}
+        {/* Rota Pública */}
         <Route path="/login" element={<Login />} />
 
-        {/* --- ÁREA DO USUÁRIO (SEM LAYOUT ADMIN) --- */}
-        <Route path="/usuario" element={<UserDashboard />} />
-        <Route path="/usuario/novo/chamado" element={<NovoChamadoUser />} />
-        <Route path="/usuario/novo/agendamento" element={<NovoAgendamentoUser />} />
-       
+        {/* --- ÁREA DO USUÁRIO (PROTEGIDA) --- */}
+        <Route path="/usuario" element={
+          <PrivateRoute><UserDashboard /></PrivateRoute>
+        } />
+        <Route path="/usuario/novo/chamado" element={
+          <PrivateRoute><NovoChamadoUser /></PrivateRoute>
+        } />
+        <Route path="/usuario/novo/agendamento" element={
+          <PrivateRoute><NovoAgendamentoUser /></PrivateRoute>
+        } />
 
-        {/* --- ÁREA DO ADMIN (COM LAYOUT LATERAL) --- */}
-        <Route path="/" element={<Layout />}>
-          {/* AQUI ESTÁ A MUDANÇA: Redireciona para o DASHBOARD ao entrar */}
+        {/* --- ÁREA DO ADMIN (PROTEGIDA COM LAYOUT) --- */}
+        <Route path="/" element={
+          <PrivateRoute><Layout /></PrivateRoute>
+        }>
           <Route index element={<Navigate to="/dashboard" replace />} />
-          
-          
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="chamados" element={<Chamados />} />
           <Route path="agendamentos" element={<Agendamentos />} />
-          {/* AQUI: O Novo Chamado do Admin deve estar aqui dentro! */}
           <Route path="novo-chamado" element={<NovoChamadoAdmin />} />
-          <Route path="novo-chamado" element={<NovoChamado />} />
           <Route path="monitor" element={<Monitor />} />
         </Route>
-
-        {/* Rota de Erro 404 */}
-        <Route path="*" element={<div style={{padding: 50, textAlign: 'center'}}><h1>404 - Página não encontrada</h1><a href="/login">Voltar ao Login</a></div>} />
-
+        
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
   );
