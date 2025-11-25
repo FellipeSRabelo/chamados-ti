@@ -1,0 +1,92 @@
+/* Container dos Botões de Status */
+.status-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.status-btn {
+  padding: 8px 16px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.status-btn:hover { background: #f1f5f9; }
+
+.status-btn.active {
+  background: #1e293b; /* Azul escuro */
+  color: white;
+  border-color: #1e293b;
+}
+
+/* Container dos Filtros Avançados */
+.advanced-filters-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.toggle-filters-btn {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.toggle-filters-btn:hover { color: #1e293b; }
+
+/* Área dos Inputs */
+.filters-body {
+  padding: 20px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.filter-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.filter-input {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.filter-input.date { width: 140px; text-align: center; }
+.filter-input.text { width: 100%; max-width: 400px; }
+
+.clear-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.clear-btn:hover { background: #dc2626; }

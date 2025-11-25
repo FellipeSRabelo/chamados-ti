@@ -1,0 +1,82 @@
+.dashboard-wrapper {
+  padding: 20px;
+  background-color: #f8fafc;
+  min-height: 100%;
+}
+
+.dashboard-title {
+  color: #1e293b;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+/* Grid Principal */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.dashboard-card h3 {
+  margin-top: 0;
+  color: #64748b;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+
+/* Estilo das Listas (Últimos Chamados) */
+.recent-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.9rem;
+}
+.recent-item:last-child { border-bottom: none; }
+
+.recent-id { font-weight: bold; color: #3b82f6; }
+.recent-desc { color: #334155; flex: 1; margin-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.recent-date { color: #94a3b8; font-size: 0.8rem; }
+
+/* Área do Gráfico Grande (Montanha) */
+.full-width-card {
+  grid-column: 1 / -1; /* Ocupa toda a largura */
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.chart-filters {
+  display: flex;
+  gap: 10px;
+}
+
+.chart-select {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+}

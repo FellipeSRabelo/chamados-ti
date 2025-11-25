@@ -1,0 +1,133 @@
+.monitor-container {
+  padding: 20px;
+  background-color: #f3f4f6;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* --- NAVEGAÇÃO --- */
+.monitor-nav {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: white;
+}
+
+.nav-btn.active { background-color: #2563eb; } /* Azul */
+.nav-btn.inactive { background-color: #4b5563; } /* Cinza */
+.nav-btn:hover { opacity: 0.9; }
+
+.nav-divider {
+  border-left: 1px solid #e5e7eb;
+  height: 24px;
+  margin: 0 10px;
+}
+
+.action-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-test { background-color: #16a34a; } /* Verde */
+.btn-test:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
+.btn-stop { background-color: #ca8a04; } /* Amarelo/Laranja */
+.btn-stop:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
+/* --- GRID E BLOCOS --- */
+.monitor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.service-block {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.service-block-title {
+  background-color: #2e3149; /* Azul Elisa */
+  color: white;
+  padding: 12px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.service-block-content {
+  padding: 10px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+/* --- ITENS DA LISTA --- */
+.service-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-bottom: 1px solid #f3f4f6;
+}
+.service-row:last-child { border-bottom: none; }
+
+.service-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.service-target {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-right: 10px;
+}
+
+/* --- BADGES DE STATUS --- */
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 80px;
+  text-align: center;
+  color: white;
+}
+
+.status-online { background-color: #10b981; }
+.status-offline { background-color: #ef4444; }
+.status-verificando { background-color: #f59e0b; }
+.status-aguardando { background-color: #9ca3af; }
+.status-error { background-color: #7c3aed; }
