@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
-import PrivateRoute from './components/PrivateRoute'; // <--- Importe o Segurança
+import PrivateRoute from './components/PrivateRoute';
 
 // Páginas Admin
 import Login from './pages/Login';
@@ -8,13 +8,12 @@ import Dashboard from './pages/Dashboard';
 import Chamados from './pages/Chamados';
 import Agendamentos from './pages/Agendamentos';
 import NovoChamadoAdmin from './pages/NovoChamadoAdmin';
+import Monitor from './pages/Monitor'; // <--- O IMPORT CORRETO ESTÁ AQUI AGORA
 
 // Páginas Usuário
 import UserDashboard from './pages/UserDashboard';
 import NovoChamadoUser from './pages/NovoChamadoUser';
 import NovoAgendamentoUser from './pages/NovoAgendamentoUser';
-
-const Monitor = () => <div style={{padding: 20}}><h1>Monitor (Em construção)</h1></div>;
 
 function App() {
   return (
@@ -43,6 +42,8 @@ function App() {
           <Route path="chamados" element={<Chamados />} />
           <Route path="agendamentos" element={<Agendamentos />} />
           <Route path="novo-chamado" element={<NovoChamadoAdmin />} />
+          
+          {/* Rota do Monitor */}
           <Route path="monitor" element={<Monitor />} />
         </Route>
         
