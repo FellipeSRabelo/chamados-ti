@@ -4,12 +4,12 @@ importScripts('https://www.gstatic.com/firebasejs/compat/9.22.0/firebase-messagi
 // ATENÇÃO: Copie os valores do seu firebaseConfig.js e cole aqui ENTRE ASPAS.
 // Não use variáveis, coloque os valores reais.
 const firebaseConfig = {
-  apiKey: "SUA_API_KEY_AQUI_COPIE_DO_OUTRO_ARQUIVO",
-  authDomain: "seu-projeto.firebaseapp.com",
-  projectId: "seu-projeto-id",
-  storageBucket: "seu-projeto.appspot.com",
-  messagingSenderId: "NUMERO_SENDER_ID",
-  appId: "SEU_APP_ID"
+  apiKey: "AIzaSyBn3otnFDtySDsHQK8fzD_yJqKPdONKKsY",
+  authDomain: "chamadosti-501e8.firebaseapp.com",
+  projectId: "chamadosti-501e8",
+  storageBucket: "chamadosti-501e8.firebasestorage.app",
+  messagingSenderId: "125531522166",
+  appId: "1:125531522166:web:9bf465b592b1096705cb57"
 };
 
 firebase.initializeApp(firebaseConfig);
