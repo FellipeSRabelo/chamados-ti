@@ -5,7 +5,7 @@ import { app } from "../firebaseConfig";
 
 // ▼▼▼ COLE SUA CHAVE VAPID AQUI (MANTENHA AS ASPAS) ▼▼▼
 // Pegue em: Configurações do Projeto > Cloud Messaging > Web configuration > Web Push certificates
-const VAPID_KEY = "COLE_SUA_CHAVE_GIGANTE_AQUI"; 
+const VAPID_KEY = "BGWbSqipO5mgziI4LvlMKJKRm9WuuNS79_xmcDNYv4A_t6JknwIHQqSAfFqxhKG6s31wdoQJ0TjAfjgnl-r4nWM"; 
 
 const db = getFirestore(app);
 

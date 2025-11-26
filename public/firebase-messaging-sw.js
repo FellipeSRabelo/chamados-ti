@@ -1,8 +1,8 @@
-importScripts('https://www.gstatic.com/firebasejs/compat/9.22.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/compat/9.22.0/firebase-messaging-compat.js');
+// Usando a versão 10.12.2 (Mais recente e estável)
+importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
 
-// ATENÇÃO: Copie os valores do seu firebaseConfig.js e cole aqui ENTRE ASPAS.
-// Não use variáveis, coloque os valores reais.
+// ▼▼▼ COLE SUAS CHAVES AQUI (NÃO USE IMPORT, COLE OS DADOS REAIS) ▼▼▼
 const firebaseConfig = {
   apiKey: "AIzaSyBn3otnFDtySDsHQK8fzD_yJqKPdONKKsY",
   authDomain: "chamadosti-501e8.firebaseapp.com",
@@ -16,14 +16,28 @@ firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 
+// Configura o recebimento em segundo plano
 messaging.onBackgroundMessage(function(payload) {
-  console.log('[firebase-messaging-sw.js] Mensagem em background:', payload);
+  console.log('[firebase-messaging-sw.js] Recebeu mensagem em background ', payload);
   
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: '/pwa-192x192.png'
+    icon: '/pwa-192x192.png', // Certifique-se que essa imagem existe na pasta public
+    data: payload.data // Passa dados extras (como o link)
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+// Lida com o clique na notificação
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  
+  // Tenta pegar o link que enviamos no payload
+  const link = event.notification.data?.click_action || '/dashboard';
+  
+  event.waitUntil(
+    clients.openWindow(link)
+  );
 });
