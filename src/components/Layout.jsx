@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
-import { getFirestore, collection, query, where, onSnapshot, orderBy, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, collection, query, where, onSnapshot, orderBy, doc, getDoc, updateDoc, limit } from 'firebase/firestore';
 import { app } from '../firebaseConfig';
 import { requestNotificationPermission } from '../utils/pushNotification';
 import './Layout.css';
@@ -44,7 +44,8 @@ export default function Layout() {
       const q = query(
         collection(db, "notificacoes"), 
         where("para", "==", destinatario),
-        orderBy("timestamp", "desc")
+        orderBy("timestamp", "desc"),
+        limit(12)
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
