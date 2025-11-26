@@ -3,50 +3,55 @@ import { messaging } from "../firebaseConfig";
 import { doc, updateDoc, getFirestore, arrayUnion, getDoc, setDoc } from "firebase/firestore";
 import { app } from "../firebaseConfig";
 
-// ▼▼▼ COLE SUA CHAVE AQUI (MANTENHA AS ASPAS) ▼▼▼
-const VAPID_KEY = "BGWbSqipO5mgziI4LvlMKJKRm9WuuNS79_xmcDNYv4A_t6JknwIHQqSAfFqxhKG6s31wdoQJ0TjAfjgnl-r4nWM"; 
+// ▼▼▼ COLE SUA CHAVE VAPID AQUI (MANTENHA AS ASPAS) ▼▼▼
+// Pegue em: Configurações do Projeto > Cloud Messaging > Web configuration > Web Push certificates
+const VAPID_KEY = "COLE_SUA_CHAVE_GIGANTE_AQUI"; 
 
 const db = getFirestore(app);
 
 export const requestNotificationPermission = async (userEmail) => {
+  console.log("1. Iniciando pedido de permissão para:", userEmail);
+  
   try {
     // 1. Pede permissão ao navegador/celular
     const permission = await Notification.requestPermission();
     
     if (permission === 'granted') {
-      console.log('Permissão de notificação concedida.');
+      console.log('2. Permissão concedida! Tentando gerar token...');
       
       // 2. Pega o Token único deste dispositivo
       const token = await getToken(messaging, { vapidKey: VAPID_KEY });
       
       if (token) {
-        console.log('Token FCM gerado:', token);
+        console.log('3. Token gerado com sucesso:', token);
         
-        // 3. Verifica se é Admin ou Usuário Comum para saber onde salvar
+        // 4. Tenta salvar no ADMIN primeiro
         const adminRef = doc(db, "admins", userEmail);
         const adminSnap = await getDoc(adminRef);
         
         if (adminSnap.exists()) {
-          // Se é Admin, salva na coleção 'admins'
+          console.log("4. Usuário é Admin. Salvando token...");
           await updateDoc(adminRef, {
             fcmTokens: arrayUnion(token)
           });
-          console.log('Token salvo no perfil do Admin.');
+          console.log('5. Sucesso! Token salvo na coleção admins.');
         } else {
-          // Se é usuário comum, salva/cria na coleção 'users' (ou onde preferir)
-          // Vamos criar uma coleção 'users_tokens' simples para não complicar
+          console.log("4. Usuário Comum. Salvando em users_tokens...");
+          // Se não é admin, salva numa coleção separada
           const userTokenRef = doc(db, "users_tokens", userEmail);
           await setDoc(userTokenRef, {
             email: userEmail,
             fcmTokens: arrayUnion(token)
           }, { merge: true });
-          console.log('Token salvo para o Usuário.');
+          console.log('5. Sucesso! Token salvo na coleção users_tokens.');
         }
+      } else {
+        console.log('Erro: Nenhum token foi gerado.');
       }
     } else {
-      console.log('Permissão de notificação negada pelo usuário.');
+      console.log('Permissão de notificação foi negada pelo usuário.');
     }
   } catch (error) {
-    console.error('Erro ao configurar notificações:', error);
+    console.error('ERRO FATAL ao configurar notificações:', error);
   }
 };
