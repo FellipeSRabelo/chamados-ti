@@ -132,54 +132,55 @@ export default function Chamados() {
 
  const storage = getStorage(app); // Inicializa o storage
 
-// Ação 3: Salvar (Parecer Interno + Histórico + Foto)
-const handleSaveParecer = async (textoInterno, novaMensagem, novoArquivo) => {
+// Ação 3: Salvar (Parecer Interno + Mensagem Pública + Foto)
+  // IMPORTANTE: Os nomes aqui (textoInterno, textoPublico, novoArquivo) devem ser usados dentro da função
+  const handleSaveParecer = async (textoInterno, textoPublico, novoArquivo) => {
     if (!editingChamado) return;
 
     const chamadoRef = doc(db, "chamados", editingChamado.id);
-
+    
+    // 1. Dados básicos (Parecer interno sempre salva)
     let dadosParaAtualizar = {
-      parecer: textoInterno // Sempre atualiza o parecer interno (texto fixo)
+      parecer: textoInterno
     };
 
-    // SE TIVER MENSAGEM NOVA, ADICIONA AO HISTÓRICO
-    if (novaMensagem.trim()) {
+    // 2. Se tiver mensagem pública, adiciona ao histórico
+    // AQUI ESTAVA O ERRO: A variável precisa ser 'textoPublico'
+    if (textoPublico && textoPublico.trim() !== "") {
         dadosParaAtualizar.historico_conversa = arrayUnion({
             autor: 'admin',
-            texto: novaMensagem,
+            texto: textoPublico,
             data: new Date().toLocaleString('pt-BR')
         });
     }
 
     try {
-      // 3. Se tiver foto nova, faz o upload
+      // 3. Upload da Foto
       if (novoArquivo) {
         console.log("Enviando foto...");
         const nomeArquivo = `pareceres/${editingChamado.id}_${Date.now()}`;
         const storageRef = ref(storage, nomeArquivo);
         await uploadBytes(storageRef, novoArquivo);
         const urlDaFoto = await getDownloadURL(storageRef);
-        
-        // Adiciona a URL ao objeto de atualização
         dadosParaAtualizar.foto_parecer = urlDaFoto;
       }
 
-      // 4. Finalmente, salva tudo no Firestore de uma vez só
+      // 4. Salva no Banco
       await updateDoc(chamadoRef, dadosParaAtualizar);
-      if (textoPublico) {
-    // ... (código do arrayUnion) ...
-
-    await enviarNotificacao(
-       editingChamado.email,
-       "Nova mensagem da TI",
-       `Atualização no chamado #${editingChamado.id_sequencial}: ${textoPublico}`,
-       "/usuario"
-    );
-}
       
+      // Notificação
+      if (textoPublico) {
+         await enviarNotificacao(
+           editingChamado.email,
+           "Nova mensagem da TI",
+           `Atualização no chamado #${editingChamado.id_sequencial}`,
+           `/chamados?id=${editingChamado.id_sequencial}`
+         );
+      }
+
     } catch (error) {
       console.error("Erro ao salvar:", error);
-      alert("Erro ao salvar.");
+      alert("Erro ao salvar. Verifique o console.");
     }
   };
 
