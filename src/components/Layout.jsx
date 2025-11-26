@@ -3,10 +3,8 @@ import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { getFirestore, collection, query, where, onSnapshot, orderBy, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { app } from '../firebaseConfig';
-import './Layout.css';
-
-// ▼▼▼ 1. IMPORTAÇÃO NOVA AQUI ▼▼▼
 import { requestNotificationPermission } from '../utils/pushNotification';
+import './Layout.css';
 
 import { 
   Menu, Maximize, Bell, MoreVertical, LogOut, 
@@ -17,6 +15,7 @@ export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [menuUserOpen, setMenuUserOpen] = useState(false);
   
+  // Estados para Notificação e Admin
   const [notifOpen, setNotifOpen] = useState(false);
   const [notificacoes, setNotificacoes] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -27,18 +26,21 @@ export default function Layout() {
   const db = getFirestore(app);
   const user = auth.currentUser;
 
-  // Efeito 1: Busca notificações do banco (Sino) e verifica Admin
+  // EFEITO 1: Verifica se é Admin e busca as notificações do sino
   useEffect(() => {
     if (!user) return;
 
     const checkAdminAndSubscribe = async () => {
+      // 1. Verifica se é Admin
       const adminRef = doc(db, "admins", user.email);
       const adminSnap = await getDoc(adminRef);
       const ehAdmin = adminSnap.exists();
       setIsAdmin(ehAdmin);
 
+      // 2. Define o destinatário ("ADMIN" ou email do user)
       const destinatario = ehAdmin ? "ADMIN" : user.email;
 
+      // 3. Busca notificações
       const q = query(
         collection(db, "notificacoes"), 
         where("para", "==", destinatario),
@@ -59,17 +61,14 @@ export default function Layout() {
     checkAdminAndSubscribe();
   }, [user]);
 
-  // ▼▼▼ 2. EFEITO NOVO: PEDIR PERMISSÃO DE PUSH (CELULAR) ▼▼▼
+  // EFEITO 2: Pede permissão de Push (Celular) ao carregar
   useEffect(() => {
     if (user) {
-      // Chama a função que pede permissão e salva o token no banco
       requestNotificationPermission(user.email);
     }
-  }, [user]); // Roda sempre que o usuário logar/carregar a página
-  // ▲▲▲ FIM DA INSERÇÃO ▲▲▲
+  }, [user]);
 
-
-  // Conta não lidas
+  // Conta notificações não lidas
   const naoLidas = notificacoes.filter(n => !n.lida).length;
 
   const handleLogout = () => {
@@ -90,10 +89,11 @@ export default function Layout() {
     if (!notificacao.lida) {
       await updateDoc(doc(db, "notificacoes", notificacao.id), { lida: true });
     }
+    setNotifOpen(false);
     if (notificacao.link) navigate(notificacao.link);
-    setNotificacoesOpen(false);
   };
 
+  // Itens do Menu
   const menuItemsAdmin = [
     { path: '/dashboard', name: 'Dashboard', icon: <LayoutDashboard size={20} /> },
     { path: '/chamados', name: 'Chamados', icon: <Ticket size={20} /> },
@@ -111,6 +111,7 @@ export default function Layout() {
   return (
     <div className="dashboard-container">
       
+      {/* SIDEBAR */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
           {sidebarOpen ? 'TI Elisa Andreoli' : 'TI'}
@@ -125,7 +126,9 @@ export default function Layout() {
         </nav>
       </aside>
 
+      {/* CONTEÚDO PRINCIPAL */}
       <div className="main-content">
+        
         <header className="top-header">
           <div className="header-left">
             <button className="icon-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
@@ -141,12 +144,14 @@ export default function Layout() {
               <Maximize size={20} />
             </button>
             
+            {/* SINO DE NOTIFICAÇÕES */}
             <div className="notification-wrapper" style={{ position: 'relative' }}>
               <button className="icon-btn" onClick={() => setNotifOpen(!notifOpen)}>
                 <Bell size={20} />
                 {naoLidas > 0 && <span className="badge-dot"></span>}
               </button>
 
+              {/* Dropdown */}
               {notifOpen && (
                 <div className="notification-dropdown">
                   <div className="notif-header">
@@ -174,6 +179,7 @@ export default function Layout() {
               )}
             </div>
 
+            {/* MENU USUÁRIO */}
             <div className="user-menu-container">
               <button className="icon-btn" onClick={() => setMenuUserOpen(!menuUserOpen)}>
                 <MoreVertical size={20} />
