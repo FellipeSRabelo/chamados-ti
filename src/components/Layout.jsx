@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
-import { getFirestore, collection, query, where, onSnapshot, orderBy, doc, updateDoc } from 'firebase/firestore';
+import { getFirestore, collection, query, where, onSnapshot, orderBy, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { app } from '../firebaseConfig';
 import './Layout.css';
+
+// ▼▼▼ 1. IMPORTAÇÃO NOVA AQUI ▼▼▼
+import { requestNotificationPermission } from '../utils/pushNotification';
 
 import { 
   Menu, Maximize, Bell, MoreVertical, LogOut, 
@@ -14,9 +17,9 @@ export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [menuUserOpen, setMenuUserOpen] = useState(false);
   
-  // --- ESTADOS PARA NOTIFICAÇÃO ---
   const [notifOpen, setNotifOpen] = useState(false);
   const [notificacoes, setNotificacoes] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,31 +27,49 @@ export default function Layout() {
   const db = getFirestore(app);
   const user = auth.currentUser;
 
-  // Busca Notificações em Tempo Real para "ADMIN"
-useEffect(() => {
-    // Query simplificada: Traz TUDO da coleção notificações (só para testar)
-    // Depois voltamos com o filtro
-    const q = query(collection(db, "notificacoes"));
+  // Efeito 1: Busca notificações do banco (Sino) e verifica Admin
+  useEffect(() => {
+    if (!user) return;
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log("Notificações cruas do banco:", snapshot.docs.length); // Log para debug
-      
-      const lista = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      
-      // Filtra e ordena via JavaScript (mais seguro por enquanto)
-      const minhasNotificacoes = lista.filter(n => n.para === "ADMIN");
-      minhasNotificacoes.sort((a, b) => b.timestamp - a.timestamp);
+    const checkAdminAndSubscribe = async () => {
+      const adminRef = doc(db, "admins", user.email);
+      const adminSnap = await getDoc(adminRef);
+      const ehAdmin = adminSnap.exists();
+      setIsAdmin(ehAdmin);
 
-      setNotificacoes(minhasNotificacoes);
-    });
+      const destinatario = ehAdmin ? "ADMIN" : user.email;
 
-    return () => unsubscribe();
-  }, []);
+      const q = query(
+        collection(db, "notificacoes"), 
+        where("para", "==", destinatario),
+        orderBy("timestamp", "desc")
+      );
 
-  // Conta quantas não foram lidas
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const lista = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setNotificacoes(lista);
+      });
+
+      return unsubscribe;
+    };
+
+    checkAdminAndSubscribe();
+  }, [user]);
+
+  // ▼▼▼ 2. EFEITO NOVO: PEDIR PERMISSÃO DE PUSH (CELULAR) ▼▼▼
+  useEffect(() => {
+    if (user) {
+      // Chama a função que pede permissão e salva o token no banco
+      requestNotificationPermission(user.email);
+    }
+  }, [user]); // Roda sempre que o usuário logar/carregar a página
+  // ▲▲▲ FIM DA INSERÇÃO ▲▲▲
+
+
+  // Conta não lidas
   const naoLidas = notificacoes.filter(n => !n.lida).length;
 
   const handleLogout = () => {
@@ -65,19 +86,15 @@ useEffect(() => {
     }
   };
 
-  // Ao clicar em uma notificação
   const handleClickNotif = async (notificacao) => {
-    // Marca como lida no banco
     if (!notificacao.lida) {
-      const notifRef = doc(db, "notificacoes", notificacao.id);
-      await updateDoc(notifRef, { lida: true });
+      await updateDoc(doc(db, "notificacoes", notificacao.id), { lida: true });
     }
-    // Redireciona (se tiver link) e fecha o menu
-    setNotifOpen(false);
     if (notificacao.link) navigate(notificacao.link);
+    setNotificacoesOpen(false);
   };
 
-  const menuItems = [
+  const menuItemsAdmin = [
     { path: '/dashboard', name: 'Dashboard', icon: <LayoutDashboard size={20} /> },
     { path: '/chamados', name: 'Chamados', icon: <Ticket size={20} /> },
     { path: '/agendamentos', name: 'Agendamentos', icon: <Calendar size={20} /> },
@@ -85,10 +102,15 @@ useEffect(() => {
     { path: '/monitor', name: 'Monitor', icon: <Monitor size={20} /> },
   ];
 
+  const menuItemsUser = [
+     { path: '/usuario', name: 'Meus Chamados', icon: <Ticket size={20} /> },
+  ];
+
+  const menuItems = isAdmin ? menuItemsAdmin : menuItemsUser;
+
   return (
     <div className="dashboard-container">
       
-      {/* SIDEBAR */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
           {sidebarOpen ? 'TI Elisa Andreoli' : 'TI'}
@@ -103,9 +125,7 @@ useEffect(() => {
         </nav>
       </aside>
 
-      {/* CONTEÚDO PRINCIPAL */}
       <div className="main-content">
-        
         <header className="top-header">
           <div className="header-left">
             <button className="icon-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
@@ -121,14 +141,12 @@ useEffect(() => {
               <Maximize size={20} />
             </button>
             
-            {/* --- BOTÃO DE NOTIFICAÇÕES --- */}
             <div className="notification-wrapper" style={{ position: 'relative' }}>
               <button className="icon-btn" onClick={() => setNotifOpen(!notifOpen)}>
                 <Bell size={20} />
                 {naoLidas > 0 && <span className="badge-dot"></span>}
               </button>
 
-              {/* DROPDOWN DE NOTIFICAÇÕES */}
               {notifOpen && (
                 <div className="notification-dropdown">
                   <div className="notif-header">
@@ -156,7 +174,6 @@ useEffect(() => {
               )}
             </div>
 
-            {/* MENU USUÁRIO */}
             <div className="user-menu-container">
               <button className="icon-btn" onClick={() => setMenuUserOpen(!menuUserOpen)}>
                 <MoreVertical size={20} />
