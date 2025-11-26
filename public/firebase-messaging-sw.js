@@ -15,7 +15,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
-
+/*
 // Configura o recebimento em segundo plano
 messaging.onBackgroundMessage(function(payload) {
   console.log('[firebase-messaging-sw.js] Recebeu mensagem em background ', payload);
@@ -40,4 +40,4 @@ self.addEventListener('notificationclick', function(event) {
   event.waitUntil(
     clients.openWindow(link)
   );
-});
+});*/
