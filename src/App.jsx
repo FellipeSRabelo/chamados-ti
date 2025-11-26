@@ -10,6 +10,7 @@ import Chamados from './pages/Chamados';
 import Agendamentos from './pages/Agendamentos';
 import NovoChamadoAdmin from './pages/NovoChamadoAdmin';
 import Monitor from './pages/Monitor';
+import Limpeza from './Limpeza';
 
 // Páginas Usuário
 import UserDashboard from './pages/UserDashboard';
@@ -45,6 +46,7 @@ function App() {
           <Route path="agendamentos" element={<Agendamentos />} />
           <Route path="novo-chamado" element={<NovoChamadoAdmin />} />
           <Route path="monitor" element={<Monitor />} />
+          <Route path="/limpeza" element={<Limpeza />} />
         </Route>
         
         <Route path="*" element={<Navigate to="/login" />} />

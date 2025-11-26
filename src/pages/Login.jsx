@@ -3,6 +3,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { app } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import InstallButton from '../components/InstallButton';
 
 export default function Login() {
   const [error, setError] = useState('');
@@ -115,6 +116,7 @@ export default function Login() {
             </>
           )}
         </button>
+        <InstallButton />
       </div>
     </div>
   );
