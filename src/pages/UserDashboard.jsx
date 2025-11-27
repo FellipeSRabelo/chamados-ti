@@ -249,25 +249,47 @@ export default function UserDashboard() {
   const listaExibida = todosItens.filter(item => tab === 'pendentes' ? !item.is_realizado : item.is_realizado);
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', paddingBottom: '80px' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#d6d6d6ff', paddingBottom: '80px' }}>
       
       {/* HEADER MOBILE */}
       <div style={{ background: 'white', padding: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', position: 'sticky', top: 0, zIndex: 10 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-           <div>
-             <h1 style={{ margin: 0, fontSize: '1.3rem', color: '#1e293b' }}>Olá, {user?.displayName?.split(' ')[0] || 'Colaborador'}!</h1>
-             <span style={{ fontSize: '0.9rem', color: '#64748b' }}>Painel de Solicitações</span>
+           
+           {/* ÁREA DO USUÁRIO (COM FOTO) */}
+           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+             {/* Se tiver foto, mostra. Se não, mostra um ícone padrão ou nada */}
+             {user?.photoURL ? (
+               <img 
+                 src={user.photoURL} 
+                 alt="Perfil" 
+                 referrerPolicy="no-referrer" // <--- O SEGREDINHO ESTÁ AQUI
+                 style={{ width: '45px', height: '45px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #e2e8f0' }} 
+               />
+             ) : (
+               // Opcional: Um círculo com a inicial se não tiver foto
+               <div style={{ width: '45px', height: '45px', borderRadius: '50%', background: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '1.2rem' }}>
+                 {user?.displayName?.charAt(0) || 'U'}
+               </div>
+             )}
+             
+             <div>
+               <h1 style={{ margin: 0, fontSize: '1.2rem', color: '#1e293b', lineHeight: '1.2' }}>
+                 Olá, {user?.displayName?.split(' ')[0] || 'Colaborador'}!
+               </h1>
+               <span style={{ fontSize: '0.8rem', color: '#64748b' }}>TI - Elisa Andreoli</span>
+             </div>
            </div>
            
            <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
-               {/* SINO DE NOTIFICAÇÕES */}
+               {/* SINO DE NOTIFICAÇÕES (MANTENHA IGUAL) */}
                <div className="notification-wrapper" style={{ position: 'relative' }}>
                   <button className="icon-btn" onClick={() => setNotifOpen(!notifOpen)} style={{background: 'none', border: 'none', cursor: 'pointer'}}>
-                    <Bell size={24} color="#64748b" />
+                    <Bell size={24} color="#313131ff" />
                     {naoLidas > 0 && <span className="badge-dot"></span>}
                   </button>
                   {notifOpen && (
                     <div className="notification-dropdown" style={{right: '-10px', width: '280px'}}>
+                      {/* ... (conteúdo do dropdown mantém igual) ... */}
                       <div className="notif-header">
                         <strong>Notificações ({naoLidas})</strong>
                         <button onClick={() => setNotifOpen(false)}><X size={16} /></button>
@@ -288,10 +310,12 @@ export default function UserDashboard() {
                     </div>
                   )}
                 </div>
-               <button onClick={() => signOut(auth).then(()=>navigate('/login'))} style={{ background: 'none', border: 'none', color: '#ef4444' }}><LogOut /></button>
+
+               <button onClick={() => signOut(auth).then(()=>navigate('/login'))} style={{ background: 'none', border: 'none', color: '#2b2b2bff' }}><LogOut /></button>
            </div>
         </div>
 
+        {/* BOTÕES DE AÇÃO (MANTENHA IGUAL) */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
           <button onClick={() => navigate('/usuario/novo/chamado')} style={{ padding: '15px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', fontWeight: '600' }}>
             <Ticket size={24} /> Abrir Chamado
