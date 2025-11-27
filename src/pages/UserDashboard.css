@@ -1,0 +1,249 @@
+/* Fundo geral do App */
+.user-dashboard-container {
+  min-height: 100vh;
+  background-color: #f8f9fa; /* Cinza bem suave */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  padding-bottom: 80px;
+}
+
+/* --- HEADER --- */
+.ud-header {
+  padding: 25px 25px 10px 25px;
+  background-color: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ud-user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.ud-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.ud-avatar-fallback {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #1e293b;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.ud-greeting h1 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.ud-greeting span {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.ud-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.ud-icon-btn {
+  background: white;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  position: relative;
+  transition: transform 0.1s;
+}
+.ud-icon-btn:active { transform: scale(0.95); }
+
+/* --- METRICS / OVERVIEW --- */
+.ud-section-title {
+  padding: 0 25px;
+  margin: 20px 0 15px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ud-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  padding: 0 25px;
+}
+
+.ud-metric-card {
+  background: white;
+  padding: 20px;
+  border-radius: 24px; /* Curvas acentuadas estilo iOS */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ud-metric-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.ud-metric-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.ud-metric-footer {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  width: fit-content;
+  font-weight: 600;
+}
+.ud-metric-footer.pending { background: #fff7ed; color: #f59e0b; }
+.ud-metric-footer.done { background: #f0fdf4; color: #16a34a; }
+
+/* --- BOTÕES DE AÇÃO RÁPIDA --- */
+.ud-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  padding: 0 25px;
+  margin-top: 10px;
+}
+
+.ud-action-card {
+  background: white;
+  border: none;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.1s;
+}
+.ud-action-card:active { transform: scale(0.98); }
+
+.ud-action-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ud-action-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+/* --- LISTA DE ITENS --- */
+.ud-list-container {
+  padding: 0 25px;
+  margin-top: 10px;
+}
+
+.ud-tabs {
+  display: flex;
+  background: #e2e8f0;
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.ud-tab {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ud-tab.active {
+  background: white;
+  color: #1e293b;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.ud-list-item {
+  background: white;
+  padding: 15px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.ud-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.ud-item-info { flex: 1; }
+
+.ud-item-title {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.ud-item-desc {
+  font-size: 0.85rem;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.ud-item-meta {
+  text-align: right;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}

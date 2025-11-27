@@ -249,10 +249,10 @@ export default function UserDashboard() {
   const listaExibida = todosItens.filter(item => tab === 'pendentes' ? !item.is_realizado : item.is_realizado);
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#d6d6d6ff', paddingBottom: '80px' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f3f2f2ff', paddingBottom: '80px' }}>
       
       {/* HEADER MOBILE */}
-      <div style={{ background: 'white', padding: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', position: 'sticky', top: 0, zIndex: 10 }}>
+      <div style={{ background: '#f3f2f2ff', padding: '10px', paddingTop: '20px', position: 'sticky', top: 0, zIndex: 10 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
            
            {/* ÁREA DO USUÁRIO (COM FOTO) */}
@@ -280,7 +280,7 @@ export default function UserDashboard() {
              </div>
            </div>
            
-           <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
+           <div style={{display: 'flex', alignItems: 'center', gap: '15px' }}>
                {/* SINO DE NOTIFICAÇÕES (MANTENHA IGUAL) */}
                <div className="notification-wrapper" style={{ position: 'relative' }}>
                   <button className="icon-btn" onClick={() => setNotifOpen(!notifOpen)} style={{background: 'none', border: 'none', cursor: 'pointer'}}>
@@ -314,15 +314,67 @@ export default function UserDashboard() {
                <button onClick={() => signOut(auth).then(()=>navigate('/login'))} style={{ background: 'none', border: 'none', color: '#2b2b2bff' }}><LogOut /></button>
            </div>
         </div>
-
-        {/* BOTÕES DE AÇÃO (MANTENHA IGUAL) */}
+{/* BOTÕES DE AÇÃO (NOVO ESTILO) */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-          <button onClick={() => navigate('/usuario/novo/chamado')} style={{ padding: '15px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', fontWeight: '600' }}>
-            <Ticket size={24} /> Abrir Chamado
+          
+          {/* Botão Chamado */}
+          <button 
+            onClick={() => navigate('/usuario/novo/chamado')} 
+            style={{ 
+              padding: '20px', 
+              background: 'white', 
+              color: '#1e293b', 
+              border: 'none', 
+              borderRadius: '16px', 
+              display: 'flex', 
+              flexDirection: 'row', /* Ícone ao lado */
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              gap: '12px', 
+              fontWeight: '600',
+              fontSize: '0.95rem',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', /* Sombra bonita */
+              cursor: 'pointer',
+              transition: 'transform 0.1s'
+            }}
+            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
+            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            <div style={{ background: '#eff6ff', padding: '8px', borderRadius: '50%', display: 'flex' }}>
+              <Ticket size={22} color="#3b82f6" /> {/* Ícone azul */}
+            </div>
+            Abrir Chamado
           </button>
-          <button onClick={() => navigate('/usuario/novo/agendamento')} style={{ padding: '15px', background: '#10b981', color: 'white', border: 'none', borderRadius: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', fontWeight: '600' }}>
-            <Calendar size={24} /> Agendar
+
+          {/* Botão Agendar */}
+          <button 
+            onClick={() => navigate('/usuario/novo/agendamento')} 
+            style={{ 
+              padding: '20px', 
+              background: 'white', 
+              color: '#1e293b', 
+              border: 'none', 
+              borderRadius: '16px', 
+              display: 'flex', 
+              flexDirection: 'row',
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              gap: '12px', 
+              fontWeight: '600',
+              fontSize: '0.95rem',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+              cursor: 'pointer',
+              transition: 'transform 0.1s'
+            }}
+            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
+            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            <div style={{ background: '#ecfdf5', padding: '8px', borderRadius: '50%', display: 'flex' }}>
+              <Calendar size={22} color="#10b981" /> {/* Ícone verde */}
+            </div>
+            Agendar
           </button>
+
         </div>
       </div>
 
