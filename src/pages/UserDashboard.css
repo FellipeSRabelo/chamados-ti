@@ -2,7 +2,7 @@
 .user-dashboard-container {
   min-height: 100vh;
   background-color: #f8f9fa; /* Cinza bem suave */
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Poppins', sans-serif;
   padding-bottom: 80px;
 }
 

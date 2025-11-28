@@ -14,7 +14,7 @@ import {
 import { getAuth, signOut } from 'firebase/auth';
 import { app } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, LogOut, Ticket, X, Bell } from 'lucide-react';
+import { Calendar, LogOut, Ticket, X, Bell, PlusCircle } from 'lucide-react';
 import { enviarNotificacao } from '../utils/notificacoes';
 import { requestNotificationPermission } from '../utils/pushNotification'; // <--- IMPORTANTE
 import '../components/Layout.css'; // Estilos do sino
@@ -315,24 +315,24 @@ export default function UserDashboard() {
            </div>
         </div>
 {/* BOTÕES DE AÇÃO (NOVO ESTILO) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', borderTop: '1px solid #e7e7e7ff', paddingTop: '20px' }}>
           
           {/* Botão Chamado */}
           <button 
             onClick={() => navigate('/usuario/novo/chamado')} 
             style={{ 
-              padding: '20px', 
+              padding: '6px', 
               background: 'white', 
-              color: '#1e293b', 
+              color: '#202020ff', 
               border: 'none', 
-              borderRadius: '16px', 
+              borderRadius: '8px', 
               display: 'flex', 
               flexDirection: 'row', /* Ícone ao lado */
               alignItems: 'center', 
               justifyContent: 'center', 
-              gap: '12px', 
-              fontWeight: '600',
-              fontSize: '0.95rem',
+              gap: '2px', 
+              fontWeight: '500',
+              fontSize: '0.90rem',
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', /* Sombra bonita */
               cursor: 'pointer',
               transition: 'transform 0.1s'
@@ -340,28 +340,28 @@ export default function UserDashboard() {
             onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
             onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-            <div style={{ background: '#eff6ff', padding: '8px', borderRadius: '50%', display: 'flex' }}>
-              <Ticket size={22} color="#3b82f6" /> {/* Ícone azul */}
+            <div style={{ padding: '8px', borderRadius: '50%', display: 'flex' }}>
+              <PlusCircle size={20} color="#073870ff" /> {/* Ícone azul */}
             </div>
-            Abrir Chamado
+            Novo Chamado
           </button>
 
           {/* Botão Agendar */}
           <button 
             onClick={() => navigate('/usuario/novo/agendamento')} 
             style={{ 
-              padding: '20px', 
+              padding: '6px', 
               background: 'white', 
-              color: '#1e293b', 
+              color: '#202020ff', 
               border: 'none', 
-              borderRadius: '16px', 
+              borderRadius: '8px', 
               display: 'flex', 
               flexDirection: 'row',
               alignItems: 'center', 
               justifyContent: 'center', 
-              gap: '12px', 
-              fontWeight: '600',
-              fontSize: '0.95rem',
+              gap: '2px', 
+              fontWeight: '500',
+              fontSize: '0.90rem',
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
               cursor: 'pointer',
               transition: 'transform 0.1s'
@@ -369,37 +369,111 @@ export default function UserDashboard() {
             onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
             onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-            <div style={{ background: '#ecfdf5', padding: '8px', borderRadius: '50%', display: 'flex' }}>
-              <Calendar size={22} color="#10b981" /> {/* Ícone verde */}
+            <div style={{ padding: '8px', borderRadius: '50%', display: 'flex' }}>
+              <Calendar size={18} color="#073870ff" /> {/* Ícone verde */}
             </div>
-            Agendar
+            Agendamento
           </button>
 
         </div>
       </div>
 
       {/* LISTA DE ITENS */}
-      <div style={{ padding: '20px' }}>
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
-          <button onClick={() => setTab('pendentes')} style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', background: tab === 'pendentes' ? '#1e293b' : '#e2e8f0', color: tab === 'pendentes' ? 'white' : '#64748b', fontWeight: '600' }}>Em Aberto</button>
-          <button onClick={() => setTab('resolvidos')} style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', background: tab === 'resolvidos' ? '#1e293b' : '#e2e8f0', color: tab === 'resolvidos' ? 'white' : '#64748b', fontWeight: '600' }}>Resolvidos</button>
-        </div>
+     <div style={{ padding: '0px' }}>
+      {/* <div style={{ background: '#fff', display: 'flex', gap: '0px', marginBottom: '15px' }}>
+        <button onClick={() => setTab('pendentes')} style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', background: tab === 'pendentes' ? '#1e293b' : '#ffffffff', color: tab === 'pendentes' ? 'white' : '#64748b', fontWeight: '600' }}>Em Aberto</button>
+         <button onClick={() => setTab('resolvidos')} style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', background: tab === 'resolvidos' ? '#1e293b' : '#ffffffff', color: tab === 'resolvidos' ? 'white' : '#64748b', fontWeight: '600' }}>Resolvidos</button>
+         </div> */}
+        
+<div style={{ 
+  padding: '20px',
+      display: 'flex',
+      justifyContent: 'center'
+ }}>
+      {/* Container da chave deslizante */}
+      <div
+        onClick={() => setTab(tab === 'pendentes' ? 'resolvidos' : 'pendentes')}
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          background: '#ddddddff',
+          borderRadius: '9999px',
+          padding: '4px',
+          cursor: 'pointer',
+          position: 'relative',
+          width: '300px',
+          height: '38px',
+          transition: 'background 0.3s ease',
+          userSelect: 'none',
+        }}
+      >
+        {/* Fundo que muda de cor quando ativo (opcional) */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '4px',
+            left: tab === 'pendentes' ? '4px' : 'calc(50% + 4px)',
+            width: 'calc(50% - 8px)',
+            height: '38px',
+            background: '#1e293b',
+            borderRadius: '9999px',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+          }}
+        />
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {/* Texto "Em Aberto" */}
+        <span
+          style={{
+            flex: 1,
+            textAlign: 'center',
+            zIndex: 1,
+            fontWeight: '600',
+            fontSize: '14px',
+            color: tab === 'pendentes' ? 'white' : '#64748b',
+            transition: 'color 0.3s ease',
+          }}
+        >
+          Em Aberto
+        </span>
+
+        {/* Texto "Resolvidos" */}
+        <span
+          style={{
+            flex: 1,
+            textAlign: 'center',
+            zIndex: 1,
+            fontWeight: '600',
+            fontSize: '14px',
+            color: tab === 'resolvidos' ? 'white' : '#64748b',
+            transition: 'color 0.3s ease',
+          }}
+        >
+          Resolvidos
+        </span>
+      </div>
+    </div>
+
+
+        
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 20px 0px 20px' }}>
           {listaExibida.map(item => (
             <div key={item.id} onClick={() => setSelectedItem(item)} style={{ background: 'white', padding: '15px', borderRadius: '10px', border: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
               <div>
+                
+                <div style={{ fontSize: '0.8rem', color: '#3f3f3fff' }}>
+                   #{String(item.id_sequencial).padStart(6, '0')} • {item.data_abertura.split(' ')[0]}
+                </div>
                 <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: item.tipo === 'Abertura de Chamado' ? '#3b82f6' : '#10b981', marginBottom: '4px' }}>
-                   {item.tipo === 'Abertura de Chamado' ? 'Chamado TI' : 'Agendamento'}
+                   {item.tipo === 'Abertura de Chamado' ? 'Chamado' : 'Agendamento'}
                 </div>
                 <div style={{ fontWeight: '600', color: '#334155', marginBottom: '2px' }}>
                   {item.tipo === 'Abertura de Chamado' 
                     ? (item.defeito_desc ? item.defeito_desc.substring(0, 30) + '...' : 'Sem descrição')
                     : (item.evento || 'Evento')}
                 </div>
-                <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                   #{String(item.id_sequencial).padStart(6, '0')} • {item.data_abertura.split(' ')[0]}
-                </div>
+                
               </div>
               <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: item.is_realizado ? '#22c55e' : '#f59e0b' }}></div>
             </div>
