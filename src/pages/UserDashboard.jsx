@@ -38,10 +38,10 @@ function UserDetailModal({ isOpen, onClose, data }) {
   if (!isOpen || !data) return null;
   
   // 🔍 LOG TEMPORÁRIO: Ver estrutura real dos dados
-  console.log('📋 Dados do item selecionado:', data);
+  /*console.log('📋 Dados do item selecionado:', data);
   console.log('🔑 Campos disponíveis:', Object.keys(data));
   console.log('🗓️ data_uso:', data?.data_uso, ' | hora_uso:', data?.hora_uso);
-  console.log('🗓️ data (fallback):', data?.data, ' | hora (fallback):', data?.hora);
+  console.log('🗓️ data (fallback):', data?.data, ' | hora (fallback):', data?.hora);*/
   
   const isAgendamento = (data?.tipo || '').toLowerCase().includes('agendar') || !!data?.evento;
   const statusColor = data.is_realizado ? '#22c55e' : '#f59e0b';

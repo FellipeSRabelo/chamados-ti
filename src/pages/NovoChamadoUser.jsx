@@ -134,7 +134,7 @@ export default function NovoChamadoUser() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', padding: '20px' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f7f7f7ff', padding: '20px' }}>
       
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px', gap: '10px' }}>
         <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
@@ -217,11 +217,11 @@ export default function NovoChamadoUser() {
           <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '15px', border: '2px dashed #cbd5e1', borderRadius: '10px', color: '#64748b', cursor: 'pointer', justifyContent: 'center' }}>
             <input type="file" accept="image/*" capture="environment" style={{ display: 'none' }} onChange={(e) => setFoto(e.target.files[0])} />
             <Camera size={24} />
-            {foto ? <span style={{color: '#10b981'}}>{foto.name}</span> : 'Adicionar Foto do Problema'}
+            {foto ? <span style={{color: '#051c36ff'}}>{foto.name}</span> : 'Adicionar Evidência'}
           </label>
         </div>
 
-        <button type="submit" disabled={loading} style={{ padding: '15px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '10px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginTop: '10px' }}>
+        <button type="submit" disabled={loading} style={{ padding: '15px', background: '#062141ff', color: 'white', border: 'none', borderRadius: '10px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginTop: '10px' }}>
           {loading ? <Loader className="spin" /> : <><Save size={20} /> Abrir Chamado</>}
         </button>
 
@@ -230,5 +230,5 @@ export default function NovoChamadoUser() {
   );
 }
 
-const labelStyle = { display: 'block', marginBottom: '5px', color: '#64748b', fontSize: '0.9rem' };
+const labelStyle = { display: 'block', marginBottom: '5px', color: '#202020ff', fontSize: '0.9rem' };
 const inputStyle = { width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', backgroundColor: 'white', boxSizing: 'border-box' };
