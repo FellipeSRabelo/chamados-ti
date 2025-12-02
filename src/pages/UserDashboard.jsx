@@ -311,9 +311,6 @@ export default function UserDashboard() {
                  Olá, {user?.displayName?.split(' ')[0] || 'Colaborador'}!
                </h1>
                <span style={{ fontSize: '0.8rem', color: '#3c434dff' }}>TI - Elisa Andreoli</span>
-             
-             
-             
              </div>
            </div>
            
@@ -350,7 +347,9 @@ export default function UserDashboard() {
 
                <button onClick={() => signOut(auth).then(()=>navigate('/login'))} style={{ background: 'none', border: 'none', color: '#2b2b2bff' }}><LogOut /></button>
            </div>
-        </div>
+                </div>
+   
+                  <div style={{ height: '1px', background: '#e2e8f0', margin: '15px 0' }}></div>
 
         {/* Botões de navegação Chamados/Agendamentos */}
         <div style={{ display: 'flex', gap: '10px', padding: '0 20px', marginTop: '15px' }}>
@@ -359,14 +358,19 @@ export default function UserDashboard() {
             style={{
               flex: 1,
               padding: '12px',
-              background: currentView === 'chamados' ? '#073870ff' : 'white',
-              color: currentView === 'chamados' ? 'white' : '#64748b',
+            /*background: currentView === 'chamados' ? '#073870ff' : 'white',*/
+              /*color: currentView === 'chamados' ? 'white' : '#64748b',*/
+              borderBottom: currentView === 'chamados' ? '1px solid #292929ff' : '2px solid transparent',
+              background: 'white',
+              color: '#333333ff',
               border: 'none',
-              borderRadius: '10px',
-              fontWeight: '600',
-              fontSize: '0.95rem',
+              borderRadius: '6px',
+              fontWeight: '400',
+              fontSize: '0.90rem',
               cursor: 'pointer',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              boxShadow: (currentView === 'chamados' 
+                ? 'inset 0 -2px #292929ff, 0 2px 4px rgba(0,0,0,0.1)'
+                : '0 2px 4px rgba(0,0,0,0.1)'),
               transition: 'all 0.2s'
             }}
           >
@@ -377,14 +381,19 @@ export default function UserDashboard() {
             style={{
               flex: 1,
               padding: '12px',
-              background: currentView === 'agendamentos' ? '#073870ff' : 'white',
-              color: currentView === 'agendamentos' ? 'white' : '#64748b',
+              /*background: currentView === 'agendamentos' ? '#073870ff' : 'white',*/
+              /*color: currentView === 'agendamentos' ? 'white' : '#64748b',*/
+              borderBottom: currentView === 'agendamentos' ? '1px solid #292929ff' : '2px solid transparent',
+              background: 'white',
+              color: '#333333ff',
               border: 'none',
-              borderRadius: '10px',
-              fontWeight: '600',
-              fontSize: '0.95rem',
+              borderRadius: '6px',
+              fontWeight: '400',
+              fontSize: '0.90rem',
               cursor: 'pointer',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              boxShadow: (currentView === 'agendamentos' 
+                ? 'inset 0 -2px #292929ff, 0 2px 4px rgba(0,0,0,0.1)'
+                : '0 2px 4px rgba(0,0,0,0.1)'),
               transition: 'all 0.2s'
             }}
           >
