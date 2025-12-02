@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Calendar } from 'lucide-react';
+import { Calendar, PlusCircle, PlusIcon, Ticket } from 'lucide-react';
 
 function AgendamentosView({ agendamentos, setSelectedItem, navigate }) {
   const [tab, setTab] = useState('pendentes');
+  const [menuOpen, setMenuOpen] = useState(false);
   
   const listaAgendamentos = agendamentos.filter(item => 
     tab === 'pendentes' ? !item.is_realizado : item.is_realizado
@@ -51,11 +52,11 @@ function AgendamentosView({ agendamentos, setSelectedItem, navigate }) {
                   zIndex: 1,
                   fontWeight: '600',
                   fontSize: '14px',
-                  color: tab === 'pendentes' ? 'white' : '#64748b',
+                  color: tab === 'pendentes' ? 'white' : '#1b1b1bff',
                   transition: 'color 0.3s ease',
                 }}
               >
-                Em Aberto
+                Pendentes
               </span>
               <span
                 style={{
@@ -64,7 +65,7 @@ function AgendamentosView({ agendamentos, setSelectedItem, navigate }) {
                   zIndex: 1,
                   fontWeight: '600',
                   fontSize: '14px',
-                  color: tab === 'resolvidos' ? 'white' : '#64748b',
+                  color: tab === 'resolvidos' ? 'white' : '#1b1b1bff',
                   transition: 'color 0.3s ease',
                 }}
               >
@@ -102,12 +103,83 @@ function AgendamentosView({ agendamentos, setSelectedItem, navigate }) {
         ))}
         {listaAgendamentos.length === 0 && <div style={{ textAlign: 'center', padding: '40px 0', color: '#94a3b8' }}>Nenhum agendamento aqui.</div>}
       </div>
-      {/* Botão de Adicionar Novo Agendamento */}
-      <div style={{ position: 'fixed', bottom: '90px', right: '20px', zIndex: '20' }}>
+      {/* Botão de Adicionar com Menu */}
+            <div style={{ position: 'fixed', bottom: '90px', right: '20px', zIndex: '20' }}>
+              {/* Menu de opções */}
+              {menuOpen && (
+                <div style={{
+                  position: 'absolute',
+                  bottom: '70px',
+                  right: '0',
+                  background: 'white',
+                  borderRadius: '12px',
+                  border: '1px solid #dbdbdbff',
+                  boxShadow: '2px 4px 6px rgba(0,0,0,0.35)',
+                  padding: '6px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '8px',
+                  minWidth: '190px'
+                }}>
+                  <button
+                    onClick={() => {
+                      navigate('/usuario/novo/chamado');
+                      setMenuOpen(false);
+                    }}
+                    style={{
+                      padding: '12px 16px',
+                      background: '#f8fafc',
+                      border: 'none',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem',
+                      fontWeight: '500',
+                      color: '#1e293b',
+                      transition: 'background 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = '#e2e8f0'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = '#f8fafc'}
+                  >
+                    <PlusCircle size={20} color="#1e293b" />
+                    Abrir Chamado
+                  </button>
+                  <div style={{ height: '1px', background: '#dbdbdbff', margin: '0 0' }}></div>
+                  <button
+                    onClick={() => {
+                      navigate('/usuario/novo/agendamento');
+                      setMenuOpen(false);
+                    }}
+                    style={{
+                      padding: '12px 16px',
+                      background: '#f8fafc',
+                      border: 'none',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem',
+                      fontWeight: '500',
+                      color: '#1e293b',
+                      transition: 'background 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = '#e2e8f0'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = '#f8fafc'}
+                  >
+                    <PlusCircle size={20} color="#1e293b" />
+                    Criar Agendamento
+                  </button>
+                </div>
+              )}
+        
+        {/* Botão Principal */}
         <button 
-          onClick={() => navigate('/usuario/novo/agendamento')} 
+          onClick={() => setMenuOpen(!menuOpen)} 
           style={{
-            background: '#073870ff',
+            background: menuOpen ? '#334155' : '#1e293b',
             color: 'white',
             border: 'none',
             borderRadius: '50%',
@@ -117,11 +189,14 @@ function AgendamentosView({ agendamentos, setSelectedItem, navigate }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-            cursor: 'pointer'
+            boxShadow: '2px 2px 8px rgba(0,0,0,0.55)',
+            cursor: 'pointer',
+            transform: menuOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+            transition: 'all 0.3s',
+            animation: 'fadeInRight 0.5s ease-out 2s both'
           }}
         >
-          <Calendar size={24} color="white" />
+          <PlusIcon size={34} color="white" />
         </button>
       </div>
     </>

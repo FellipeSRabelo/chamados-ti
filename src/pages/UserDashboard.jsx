@@ -349,7 +349,7 @@ export default function UserDashboard() {
            </div>
                 </div>
    
-                  <div style={{ height: '1px', background: '#e2e8f0', margin: '15px 0' }}></div>
+                  <div style={{ height: '1px', background: '#dbdbdbff', margin: '15px 0' }}></div>
 
         {/* Botões de navegação Chamados/Agendamentos */}
         <div style={{ display: 'flex', gap: '10px', padding: '0 20px', marginTop: '15px' }}>
