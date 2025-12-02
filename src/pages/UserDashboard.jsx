@@ -18,6 +18,8 @@ import { Calendar, LogOut, Ticket, X, Bell, PlusCircle } from 'lucide-react';
 import { enviarNotificacao } from '../utils/notificacoes';
 import { requestNotificationPermission } from '../utils/pushNotification'; // <--- IMPORTANTE
 import '../components/Layout.css'; // Estilos do sino
+import ChamadosView from './ChamadosView';
+import AgendamentosView from './AgendamentosView';
 
 // --- MODAL DE DETALHES (COM CHAT E REGRAS) ---
 function UserDetailModal({ isOpen, onClose, data }) {
@@ -90,38 +92,45 @@ function UserDetailModal({ isOpen, onClose, data }) {
         maxHeight: '90vh', display: 'flex', flexDirection: 'column', overflow: 'hidden'
       }} onClick={(e) => e.stopPropagation()}>
         
-        <div style={{ padding: '20px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8fafc' }}>
-          <h2 style={{ margin: 0, color: '#1e293b', fontSize: '1.2rem' }}>Detalhes do Chamado</h2>
-          <button onClick={onClose} style={{ background: 'none', border: 'none' }}><X size={24} /></button>
+        <div style={{ padding: '10px', borderBottom: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '5px', background: '#f8fafc' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2 style={{ margin: 0, color: '#1e293b', fontSize: '1.2rem' }}>Detalhes do Chamado</h2>
+            <button onClick={onClose} style={{ background: 'none', border: 'none' }}><X size={20} /></button>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'left' }}>
+          <p style={{ margin: 0, color: '#3d3d3dff', fontSize: '0.8rem' }}>Nº {String(data.id_sequencial).padStart(6, '0')}</p>
+          <p style={{ marginLeft: '15px', marginTop: 0, marginBottom: 0, color: '#3d3d3dff', fontSize: '0.8rem' }}> {String(data.data_abertura).padStart(6, '0')}</p>
+        </div>
         </div>
 
-        <div style={{ padding: '20px', overflowY: 'auto', flex: 1 }}>
-          <div style={{ display: 'inline-block', padding: '5px 12px', borderRadius: '20px', backgroundColor: statusColor + '20', color: statusColor, fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '20px' }}>
+
+        <div style={{ padding: '15px', overflowY: 'auto', flex: 1, background: '#fff' }}>
+          <div style={{ display: 'inline-block', padding: '5px 10px', borderRadius: '20px', backgroundColor: statusColor + '20', color: statusColor, fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '20px' }}>
             {statusText}
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.95rem', color: '#475569', marginBottom: '20px' }}>
-            <p><strong>Tipo:</strong> {data.tipo}</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.95rem', color: '#475569', marginBottom: '5px' }}>
+            <p style={{ margin: '0' }}><strong>Tipo:</strong> {data.tipo}</p>
             {data.tipo === 'Abertura de Chamado' ? (
               <>
-                <p><strong>Problema:</strong> {data.defeito_desc}</p>
-                <p><strong>Local:</strong> {data.sala} - {data.setor}</p>
+                <p style={{ margin: '0' }}><strong>Problema:</strong> {data.defeito_desc}</p>
+                <p style={{ margin: '0' }}><strong>Local:</strong> {data.sala} - {data.setor}</p>
               </>
             ) : (
-               <p><strong>Evento:</strong> {data.evento}</p>
+               <p style={{ margin: '0' }}><strong>Evento:</strong> {data.evento}</p>
             )}
-             <p style={{fontSize: '0.8rem', color: '#94a3b8'}}>ID: #{String(data.id_sequencial).padStart(6, '0')}</p>
-          </div>
+          </div></div>
+        <div style={{ padding: '10px', overflowY: 'auto', flex: 1, background: '#f3f2edff' }}>
+  
+            {/*<hr style={{ border: '0', borderTop: '1px solid #e2e8f0', margin: '20px 0' }} />*/}
 
-          <hr style={{ border: '0', borderTop: '1px solid #e2e8f0', margin: '20px 0' }} />
-
-          <h3 style={{ fontSize: '1rem', color: '#1e293b', marginBottom: '15px' }}>Interações</h3>
+          <h3 style={{ fontSize: '1rem', color: '#1e293b', marginBottom: '15px' }}>Suporte:</h3>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {/* Mensagem Legada (Se houver) */}
             {data.comentario_publico && (
-               <div style={{ alignSelf: 'flex-start', background: '#eff6ff', padding: '10px', borderRadius: '0 10px 10px 10px', maxWidth: '85%', border: '1px solid #bfdbfe' }}>
-                 <small style={{display:'block', color: '#3b82f6', fontSize: '0.75rem', fontWeight: 'bold'}}>TI (Mensagem Antiga)</small>
+               <div style={{ alignSelf: 'flex-start', background: '#ffffff', padding: '8px 12px', borderRadius: '10px 10px 10px 0', maxWidth: '85%', boxShadow: '0 1px 0.5px rgba(0,0,0,0.13)', lineHeight: '1.3' }}>
+                 <small style={{display:'block', color: '#333', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '3px'}}>TI (Mensagem Antiga)</small>
                  {data.comentario_publico}
                </div>
             )}
@@ -130,47 +139,63 @@ function UserDetailModal({ isOpen, onClose, data }) {
             {historico.map((msg, idx) => (
               <div key={idx} style={{
                 alignSelf: msg.autor === 'usuario' ? 'flex-end' : 'flex-start',
-                background: msg.autor === 'usuario' ? '#dcfce7' : '#eff6ff',
-                padding: '10px',
-                borderRadius: msg.autor === 'usuario' ? '10px 0 10px 10px' : '0 10px 10px 10px',
+                background: msg.autor === 'usuario' ? '#d1fae0ff' : '#ffffff',
+                padding: '8px 12px',
+                borderRadius: msg.autor === 'usuario' ? '10px 10px 0 10px' : '10px 10px 10px 0',
                 maxWidth: '85%',
-                border: msg.autor === 'usuario' ? '1px solid #86efac' : '1px solid #bfdbfe'
+                boxShadow: '2px 2px 4px rgba(0,0,0,0.18)',
+                lineHeight: '1.3',
               }}>
-                <small style={{display:'block', color: msg.autor === 'usuario' ? '#166534' : '#3b82f6', fontSize: '0.75rem', fontWeight: 'bold'}}>
+                <small style={{display:'block', color: msg.autor === 'usuario' ? '#1d1d1dff' : '#252525ff', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '3px'}}>
                   {msg.autor === 'usuario' ? 'Você' : 'Suporte TI'} - {msg.data}
                 </small>
-                {msg.texto}
+                <div style={{ wordWrap: 'break-word' }}>{msg.texto}</div>
               </div>
             ))}
             <div ref={chatEndRef} />
             
             {historico.length === 0 && !data.comentario_publico && (
-              <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>Nenhuma interação ainda.</p>
+              <p style={{ textAlign: 'center', color: '#bac4d3ff', fontSize: '0.9rem' }}>Nenhuma interação ainda.</p>
             )}
           </div>
         </div>
 
         {/* Área de Input */}
-        <div style={{ padding: '15px', borderTop: '1px solid #e2e8f0', background: '#f8fafc' }}>
+        <div style={{ padding: '12px 15px', borderTop: '1px solid #e2e8f0', background: '#f8fafc', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
           {podeComentar ? (
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <>
               <input 
                 type="text" 
                 value={novoComentario}
                 onChange={(e) => setNovoComentario(e.target.value)}
-                placeholder="Responder..."
-                style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1' }}
+                placeholder="Escrever mensagem..."
+                style={{ flex: 1, padding: '10px 15px', borderRadius: '20px', border: '1px solid #cbd5e1', background: '#ffffff', fontSize: '0.95rem', outline: 'none', fontFamily: 'inherit' }}
               />
               <button 
                 onClick={handleEnviarComentario}
                 disabled={enviando || !novoComentario.trim()}
-                style={{ background: '#3b82f6', color: 'white', border: 'none', padding: '0 20px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', opacity: enviando ? 0.7 : 1 }}
+                style={{ 
+                  background: novoComentario.trim() ? '#128c7e' : '#ccc', 
+                  color: 'white', 
+                  border: 'none', 
+                  padding: '8px 12px', 
+                  borderRadius: '50%', 
+                  fontWeight: 'bold', 
+                  cursor: novoComentario.trim() ? 'pointer' : 'not-allowed', 
+                  opacity: enviando ? 0.7 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '36px',
+                  height: '36px',
+                  fontSize: '18px'
+                }}
               >
-                Enviar
+                ➤
               </button>
-            </div>
+            </>
           ) : (
-            <div style={{ textAlign: 'center', color: '#64748b', fontSize: '0.9rem', padding: '10px', background: '#e2e8f0', borderRadius: '8px' }}>
+            <div style={{ textAlign: 'center', color: '#64748b', fontSize: '0.9rem', padding: '10px', background: '#e2e8f0', borderRadius: '8px', width: '100%' }}>
               ⏳ Aguarde a resposta do suporte.
             </div>
           )}
@@ -185,8 +210,8 @@ function UserDetailModal({ isOpen, onClose, data }) {
 export default function UserDashboard() {
   const [chamados, setChamados] = useState([]);
   const [agendamentos, setAgendamentos] = useState([]);
-  const [tab, setTab] = useState('pendentes'); 
   const [selectedItem, setSelectedItem] = useState(null);
+  const [currentView, setCurrentView] = useState('chamados'); // 'chamados' ou 'agendamentos'
   
   // Estados de Notificação
   const [notifOpen, setNotifOpen] = useState(false);
@@ -245,14 +270,23 @@ export default function UserDashboard() {
     }
   };
 
-  const todosItens = [...chamados, ...agendamentos].sort((a, b) => b.id_sequencial - a.id_sequencial);
-  const listaExibida = todosItens.filter(item => tab === 'pendentes' ? !item.is_realizado : item.is_realizado);
-
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f3f2f2ff', paddingBottom: '80px' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f3f2f2ff', paddingBottom: '80px', paddingTop: '10px' }}>
       
+      {/* LOGO DA ESCOLA */}
+    {/*<div style={{ display: 'flex', justifyContent: 'center' }}>
+      <img 
+        src="https://elisaandreoli.com.br/wp-content/uploads/2023/08/logomarca_cea_sem_fundo-1024x367.png" 
+        alt="Logomarca da Escola" 
+        style={{ maxWidth: '80px', height: 'auto' }}
+      />
+    </div>*/}
+
+
       {/* HEADER MOBILE */}
       <div style={{ background: '#f3f2f2ff', padding: '10px', paddingTop: '20px', position: 'sticky', top: 0, zIndex: 10 }}>
+
+
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
            
            {/* ÁREA DO USUÁRIO (COM FOTO) */}
@@ -276,7 +310,10 @@ export default function UserDashboard() {
                <h1 style={{ margin: 0, fontSize: '1.2rem', color: '#1e293b', lineHeight: '1.2' }}>
                  Olá, {user?.displayName?.split(' ')[0] || 'Colaborador'}!
                </h1>
-               <span style={{ fontSize: '0.8rem', color: '#64748b' }}>TI - Elisa Andreoli</span>
+               <span style={{ fontSize: '0.8rem', color: '#3c434dff' }}>TI - Elisa Andreoli</span>
+             
+             
+             
              </div>
            </div>
            
@@ -314,174 +351,64 @@ export default function UserDashboard() {
                <button onClick={() => signOut(auth).then(()=>navigate('/login'))} style={{ background: 'none', border: 'none', color: '#2b2b2bff' }}><LogOut /></button>
            </div>
         </div>
-{/* BOTÕES DE AÇÃO (NOVO ESTILO) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', borderTop: '1px solid #e7e7e7ff', paddingTop: '20px' }}>
-          
-          {/* Botão Chamado */}
-          <button 
-            onClick={() => navigate('/usuario/novo/chamado')} 
-            style={{ 
-              padding: '6px', 
-              background: 'white', 
-              color: '#202020ff', 
-              border: 'none', 
-              borderRadius: '8px', 
-              display: 'flex', 
-              flexDirection: 'row', /* Ícone ao lado */
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              gap: '2px', 
-              fontWeight: '500',
-              fontSize: '0.90rem',
-              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', /* Sombra bonita */
-              cursor: 'pointer',
-              transition: 'transform 0.1s'
-            }}
-            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
-            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
-          >
-            <div style={{ padding: '8px', borderRadius: '50%', display: 'flex' }}>
-              <PlusCircle size={20} color="#073870ff" /> {/* Ícone azul */}
-            </div>
-            Novo Chamado
-          </button>
 
-          {/* Botão Agendar */}
-          <button 
-            onClick={() => navigate('/usuario/novo/agendamento')} 
-            style={{ 
-              padding: '6px', 
-              background: 'white', 
-              color: '#202020ff', 
-              border: 'none', 
-              borderRadius: '8px', 
-              display: 'flex', 
-              flexDirection: 'row',
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              gap: '2px', 
-              fontWeight: '500',
-              fontSize: '0.90rem',
-              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        {/* Botões de navegação Chamados/Agendamentos */}
+        <div style={{ display: 'flex', gap: '10px', padding: '0 20px', marginTop: '15px' }}>
+          <button
+            onClick={() => setCurrentView('chamados')}
+            style={{
+              flex: 1,
+              padding: '12px',
+              background: currentView === 'chamados' ? '#073870ff' : 'white',
+              color: currentView === 'chamados' ? 'white' : '#64748b',
+              border: 'none',
+              borderRadius: '10px',
+              fontWeight: '600',
+              fontSize: '0.95rem',
               cursor: 'pointer',
-              transition: 'transform 0.1s'
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              transition: 'all 0.2s'
             }}
-            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
-            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-            <div style={{ padding: '8px', borderRadius: '50%', display: 'flex' }}>
-              <Calendar size={18} color="#073870ff" /> {/* Ícone verde */}
-            </div>
-            Agendamento
+            Chamados
           </button>
-
+          <button
+            onClick={() => setCurrentView('agendamentos')}
+            style={{
+              flex: 1,
+              padding: '12px',
+              background: currentView === 'agendamentos' ? '#073870ff' : 'white',
+              color: currentView === 'agendamentos' ? 'white' : '#64748b',
+              border: 'none',
+              borderRadius: '10px',
+              fontWeight: '600',
+              fontSize: '0.95rem',
+              cursor: 'pointer',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              transition: 'all 0.2s'
+            }}
+          >
+            Agendamentos
+          </button>
         </div>
       </div>
 
-      {/* LISTA DE ITENS */}
-     <div style={{ padding: '0px' }}>
-      {/* <div style={{ background: '#fff', display: 'flex', gap: '0px', marginBottom: '15px' }}>
-        <button onClick={() => setTab('pendentes')} style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', background: tab === 'pendentes' ? '#1e293b' : '#ffffffff', color: tab === 'pendentes' ? 'white' : '#64748b', fontWeight: '600' }}>Em Aberto</button>
-         <button onClick={() => setTab('resolvidos')} style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', background: tab === 'resolvidos' ? '#1e293b' : '#ffffffff', color: tab === 'resolvidos' ? 'white' : '#64748b', fontWeight: '600' }}>Resolvidos</button>
-         </div> */}
-        
-<div style={{ 
-  padding: '20px',
-      display: 'flex',
-      justifyContent: 'center'
- }}>
-      {/* Container da chave deslizante */}
-      <div
-        onClick={() => setTab(tab === 'pendentes' ? 'resolvidos' : 'pendentes')}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          background: '#ddddddff',
-          borderRadius: '9999px',
-          padding: '4px',
-          cursor: 'pointer',
-          position: 'relative',
-          width: '300px',
-          height: '38px',
-          transition: 'background 0.3s ease',
-          userSelect: 'none',
-        }}
-      >
-        {/* Fundo que muda de cor quando ativo (opcional) */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '4px',
-            left: tab === 'pendentes' ? '4px' : 'calc(50% + 4px)',
-            width: 'calc(50% - 8px)',
-            height: '38px',
-            background: '#1e293b',
-            borderRadius: '9999px',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-          }}
+      {/* Renderização das views separadas */}
+      {currentView === 'chamados' ? (
+        <ChamadosView 
+          chamados={chamados}
+          setSelectedItem={setSelectedItem}
+          navigate={navigate}
         />
+      ) : (
+        <AgendamentosView 
+          agendamentos={agendamentos}
+          setSelectedItem={setSelectedItem}
+          navigate={navigate}
+        />
+      )}
 
-        {/* Texto "Em Aberto" */}
-        <span
-          style={{
-            flex: 1,
-            textAlign: 'center',
-            zIndex: 1,
-            fontWeight: '600',
-            fontSize: '14px',
-            color: tab === 'pendentes' ? 'white' : '#64748b',
-            transition: 'color 0.3s ease',
-          }}
-        >
-          Em Aberto
-        </span>
-
-        {/* Texto "Resolvidos" */}
-        <span
-          style={{
-            flex: 1,
-            textAlign: 'center',
-            zIndex: 1,
-            fontWeight: '600',
-            fontSize: '14px',
-            color: tab === 'resolvidos' ? 'white' : '#64748b',
-            transition: 'color 0.3s ease',
-          }}
-        >
-          Resolvidos
-        </span>
-      </div>
-    </div>
-
-
-        
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 20px 0px 20px' }}>
-          {listaExibida.map(item => (
-            <div key={item.id} onClick={() => setSelectedItem(item)} style={{ background: 'white', padding: '15px', borderRadius: '10px', border: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-              <div>
-                
-                <div style={{ fontSize: '0.8rem', color: '#3f3f3fff' }}>
-                   #{String(item.id_sequencial).padStart(6, '0')} • {item.data_abertura.split(' ')[0]}
-                </div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: item.tipo === 'Abertura de Chamado' ? '#3b82f6' : '#10b981', marginBottom: '4px' }}>
-                   {item.tipo === 'Abertura de Chamado' ? 'Chamado' : 'Agendamento'}
-                </div>
-                <div style={{ fontWeight: '600', color: '#334155', marginBottom: '2px' }}>
-                  {item.tipo === 'Abertura de Chamado' 
-                    ? (item.defeito_desc ? item.defeito_desc.substring(0, 30) + '...' : 'Sem descrição')
-                    : (item.evento || 'Evento')}
-                </div>
-                
-              </div>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: item.is_realizado ? '#22c55e' : '#f59e0b' }}></div>
-            </div>
-          ))}
-          {listaExibida.length === 0 && <div style={{ textAlign: 'center', padding: '40px 0', color: '#94a3b8' }}>Nenhum item aqui.</div>}
-        </div>
-      </div>
-
+      {/* Modal de detalhes */}
       <UserDetailModal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)} data={selectedItem} />
     </div>
   );

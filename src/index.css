@@ -12,6 +12,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: #f0f2f5; /* Cor de fundo padrão */
+  font-family: 'Poppins', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 /* Garante que o React ocupe toda a altura/largura */
