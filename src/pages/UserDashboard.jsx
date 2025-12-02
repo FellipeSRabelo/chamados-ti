@@ -37,6 +37,13 @@ function UserDetailModal({ isOpen, onClose, data }) {
 
   if (!isOpen || !data) return null;
   
+  // 🔍 LOG TEMPORÁRIO: Ver estrutura real dos dados
+  console.log('📋 Dados do item selecionado:', data);
+  console.log('🔑 Campos disponíveis:', Object.keys(data));
+  console.log('🗓️ data_uso:', data?.data_uso, ' | hora_uso:', data?.hora_uso);
+  console.log('🗓️ data (fallback):', data?.data, ' | hora (fallback):', data?.hora);
+  
+  const isAgendamento = (data?.tipo || '').toLowerCase().includes('agendar') || !!data?.evento;
   const statusColor = data.is_realizado ? '#22c55e' : '#f59e0b';
   const statusText = data.is_realizado ? 'Resolvido / Finalizado' : 'Pendente / Em Análise';
 
@@ -50,7 +57,8 @@ function UserDetailModal({ isOpen, onClose, data }) {
     setEnviando(true);
 
     try {
-      const chamadoRef = doc(db, "chamados", data.id);
+      const collectionName = isAgendamento ? 'agendamentos' : 'chamados';
+      const chamadoRef = doc(db, collectionName, data.id);
       const novaMensagem = {
         autor: 'usuario',
         texto: novoComentario,
@@ -67,7 +75,7 @@ function UserDetailModal({ isOpen, onClose, data }) {
         "ADMIN", 
         "Nova Mensagem do Usuário", 
         `Comentário no chamado #${data.id_sequencial}`,
-        `/chamados?id=${data.id_sequencial}`
+        isAgendamento ? `/agendamentos?id=${data.id_sequencial}` : `/chamados?id=${data.id_sequencial}`
       );
       
       // 3. Atualização Visual Imediata
@@ -94,12 +102,12 @@ function UserDetailModal({ isOpen, onClose, data }) {
         
         <div style={{ padding: '10px', borderBottom: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '5px', background: '#f8fafc' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ margin: 0, color: '#1e293b', fontSize: '1.2rem' }}>Detalhes do Chamado</h2>
+            <h2 style={{ margin: 0, color: '#1e293b', fontSize: '1.2rem' }}>{isAgendamento ? 'Detalhes do Agendamento' : 'Detalhes do Chamado'}</h2>
             <button onClick={onClose} style={{ background: 'none', border: 'none' }}><X size={20} /></button>
           </div>
           <div style={{ display: 'flex', alignItems: 'left' }}>
           <p style={{ margin: 0, color: '#3d3d3dff', fontSize: '0.8rem' }}>Nº {String(data.id_sequencial).padStart(6, '0')}</p>
-          <p style={{ marginLeft: '15px', marginTop: 0, marginBottom: 0, color: '#3d3d3dff', fontSize: '0.8rem' }}> {String(data.data_abertura).padStart(6, '0')}</p>
+          <p style={{ marginLeft: '15px', marginTop: 0, marginBottom: 0, color: '#3d3d3dff', fontSize: '0.8rem' }}>{data.data_abertura || '—'}</p>
         </div>
         </div>
 
@@ -109,17 +117,70 @@ function UserDetailModal({ isOpen, onClose, data }) {
             {statusText}
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.95rem', color: '#475569', marginBottom: '5px' }}>
-            <p style={{ margin: '0' }}><strong>Tipo:</strong> {data.tipo}</p>
-            {data.tipo === 'Abertura de Chamado' ? (
-              <>
-                <p style={{ margin: '0' }}><strong>Problema:</strong> {data.defeito_desc}</p>
-                <p style={{ margin: '0' }}><strong>Local:</strong> {data.sala} - {data.setor}</p>
-              </>
-            ) : (
-               <p style={{ margin: '0' }}><strong>Evento:</strong> {data.evento}</p>
-            )}
-          </div></div>
+          {!isAgendamento ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.95rem', color: '#475569', marginBottom: '5px' }}>
+              <p style={{ margin: 0 }}><strong>Ocorrência:</strong> {data.ocorrencia || '—'}</p>
+              {(() => {
+                const sala = (data.sala || '').trim();
+                const setor = (data.setor || '').trim();
+                let localStr = '—';
+                if (sala && sala.toUpperCase() !== 'N/A' && setor) {
+                  localStr = `${sala} - ${setor}`;
+                } else if ((!sala || sala.toUpperCase() === 'N/A') && setor) {
+                  localStr = `${setor} - Setor`;
+                } else if (sala && sala.toUpperCase() !== 'N/A') {
+                  localStr = sala;
+                } else if (setor) {
+                  localStr = `${setor} - Setor`;
+                }
+                return <p style={{ margin: 0 }}><strong>Local:</strong> {localStr}</p>;
+              })()}
+              <p style={{ margin: 0 }}><strong>Equipamento:</strong> {data.equipamento_defeito || data.equipamento || '—'}</p>
+              <p style={{ margin: 0 }}><strong>Problema:</strong> {data.defeito_desc || '—'}</p>
+              {data.foto_url && (
+                <p style={{ margin: 0 }}>
+                  <strong>Foto de Evidência:</strong>{' '}
+                  <a 
+                    href={data.foto_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ 
+                      color: '#073870ff', 
+                      textDecoration: 'none',
+                      fontWeight: '500',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    📷 Ver foto
+                  </a>
+                </p>
+              )}
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.95rem', color: '#475569', marginBottom: '5px' }}>
+              {(() => {
+                const evento = (data.evento || '').trim();
+                const equipamentos = (data.equipamentos || '').trim();
+                const local = (data.local || '').trim();
+                const dataUso = (data.data_uso || data.data || '').trim();
+                const horaUso = (data.hora_uso || data.hora || '').trim();
+                const observacao = (data.observacao || '').trim();
+                return (
+                  <>
+                    <p style={{ margin: 0 }}><strong>Evento:</strong> {evento || '—'}</p>
+                    <p style={{ margin: 0 }}><strong>Equipamentos:</strong> {equipamentos || '—'}</p>
+                    <p style={{ margin: 0 }}><strong>Local:</strong> {local || '—'}</p>
+                    <p style={{ margin: 0 }}><strong>Data:</strong> {dataUso || '—'}</p>
+                    <p style={{ margin: 0 }}><strong>Hora:</strong> {horaUso || '—'}</p>
+                    <p style={{ margin: 0 }}><strong>Observação:</strong> {observacao || '—'}</p>
+                  </>
+                );
+              })()}
+            </div>
+          )}
+        </div>
         <div style={{ padding: '10px', overflowY: 'auto', flex: 1, background: '#f3f2edff' }}>
   
             {/*<hr style={{ border: '0', borderTop: '1px solid #e2e8f0', margin: '20px 0' }} />*/}
@@ -362,7 +423,7 @@ export default function UserDashboard() {
               /*color: currentView === 'chamados' ? 'white' : '#64748b',*/
               borderBottom: currentView === 'chamados' ? '1px solid #292929ff' : '2px solid transparent',
               background: 'white',
-              color: '#333333ff',
+              color: '#202020ff',
               border: 'none',
               borderRadius: '6px',
               fontWeight: '400',
@@ -385,7 +446,7 @@ export default function UserDashboard() {
               /*color: currentView === 'agendamentos' ? 'white' : '#64748b',*/
               borderBottom: currentView === 'agendamentos' ? '1px solid #292929ff' : '2px solid transparent',
               background: 'white',
-              color: '#333333ff',
+              color: '#202020ff',
               border: 'none',
               borderRadius: '6px',
               fontWeight: '400',

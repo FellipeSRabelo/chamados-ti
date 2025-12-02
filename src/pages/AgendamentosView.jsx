@@ -193,7 +193,7 @@ function AgendamentosView({ agendamentos, setSelectedItem, navigate }) {
             cursor: 'pointer',
             transform: menuOpen ? 'rotate(45deg)' : 'rotate(0deg)',
             transition: 'all 0.3s',
-            animation: 'fadeInRight 0.5s ease-out 2s both'
+            animation: 'fadeInRight 0.5s ease-out 0.3s both'
           }}
         >
           <PlusIcon size={34} color="white" />
