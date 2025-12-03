@@ -201,7 +201,7 @@ function UserDetailModal({ isOpen, onClose, data }) {
           <div style={{ position: 'relative', zIndex: 1 }}>
             {/*<hr style={{ border: '0', borderTop: '1px solid #e2e8f0', margin: '20px 0' }} />*/}
 
-            <h3 style={{ fontSize: '1rem', color: '#494949ff', marginBottom: '15px' }}>Suporte:</h3>
+            <h3 style={{ fontSize: '1rem', color: '#494949ff', marginBottom: '15px' }}>Comentários</h3>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {/* Mensagem Legada (Se houver) */}
