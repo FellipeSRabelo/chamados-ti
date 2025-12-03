@@ -502,6 +502,15 @@ export default function UserDashboard() {
 
       {/* Modal de detalhes */}
       <UserDetailModal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)} data={selectedItem} />
+
+      {/* LOGO DA ESCOLA NO FINAL */}
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 20px 20px 20px' }}>
+        <img 
+          src="https://elisaandreoli.com.br/wp-content/uploads/2023/08/logomarca_cea_sem_fundo-1024x367.png" 
+          alt="Logomarca da Escola" 
+          style={{ maxWidth: '120px', height: 'auto', opacity: 0.6 }}
+        />
+      </div>
     </div>
   );
 }
