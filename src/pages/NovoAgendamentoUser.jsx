@@ -3,7 +3,7 @@ import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs } from
 import { getAuth } from 'firebase/auth';
 import { app } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, Loader, Check } from 'lucide-react';
+import { ArrowLeft, Save, Loader, Check, ArrowLeftCircle, CheckCircle, CheckCircle2, CheckCircleIcon } from 'lucide-react';
 import { enviarNotificacao } from '../utils/notificacoes';
 
 const EQUIPAMENTOS_OPCOES = [
@@ -26,6 +26,7 @@ const EQUIPAMENTOS_OPCOES = [
 
 export default function NovoAgendamentoUser() {
   const [loading, setLoading] = useState(false);
+  const [descFocused, setDescFocused] = useState(false);
   
   // Estado separado para equipamentos (array)
   const [equipamentosSelecionados, setEquipamentosSelecionados] = useState([]);
@@ -118,24 +119,26 @@ export default function NovoAgendamentoUser() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', padding: '20px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px', gap: '10px' }}>
-        <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><ArrowLeft size={24} color="#1e293b" /></button>
-        <h1 style={{ margin: 0, fontSize: '1.5rem', color: '#1e293b' }}>Agendar Equipamento</h1>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f7f7f7ff', padding: '20px', borderTop: '4px solid #062141ff', borderRadius: '18px',}}>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', gap: '10px' }}>
+        <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+          <ArrowLeftCircle size={26} color="#1e293b" />
+        </button>
+        <h1 style={{ margin: 0, fontSize: '1.2rem', color: '#1e293b' }}>Novo Agendamento</h1>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         
         <div>
           <label style={labelStyle}>Nome do Evento / Aula</label>
-          <input required type="text" placeholder="Ex: Aula de História" 
+          <input required type="text" placeholder="" 
             value={formData.evento} onChange={(e) => setFormData({...formData, evento: e.target.value})}
             style={inputStyle} />
         </div>
 
         <div>
           <label style={labelStyle}>Local</label>
-          <input required type="text" placeholder="Ex: Sala 301" 
+          <input required type="text" placeholder=" " 
             value={formData.local} onChange={(e) => setFormData({...formData, local: e.target.value})}
             style={inputStyle} />
         </div>
@@ -169,18 +172,18 @@ export default function NovoAgendamentoUser() {
                   style={{
                     padding: '12px',
                     borderRadius: '8px',
-                    border: isSelected ? '2px solid #10b981' : '1px solid #cbd5e1',
-                    backgroundColor: isSelected ? '#ecfdf5' : 'white',
-                    color: isSelected ? '#047857' : '#64748b',
-                    fontWeight: isSelected ? '600' : '400',
+                    border: isSelected ? '2px solid #062141ff' : '1px solid #cbd2e1ff',
+                    backgroundColor: isSelected ? '#ecf3fdff' : 'white',
+                    color: isSelected ? '#062141ff' : '#64748b',
+                    fontWeight: isSelected ? '500' : '400',
                     cursor: 'pointer',
                     textAlign: 'left',
-                    fontSize: '0.9rem',
+                    fontSize: '0.8rem',
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center'
                   }}
                 >
                   {item}
-                  {isSelected && <Check size={16} />}
+                  {isSelected && <CheckCircle size={14} />}
                 </button>
               )
             })}
@@ -189,15 +192,18 @@ export default function NovoAgendamentoUser() {
 
         <div>
           <label style={labelStyle}>Comentário / Observação (Opcional)</label>
-          <textarea placeholder="Algum detalhe extra?" rows="3"
-            value={formData.comentario} onChange={(e) => setFormData({...formData, comentario: e.target.value})}
-            style={{...inputStyle, resize: 'vertical'}} />
+          <textarea
+            placeholder="Algum detalhe extra?"
+            rows="3"
+            value={formData.comentario}
+            onChange={(e) => setFormData({...formData, comentario: e.target.value})}
+            onFocus={() => setDescFocused(true)}
+            onBlur={() => setDescFocused(false)}
+            style={{...inputStyle, resize: 'vertical', border: descFocused ? '1px solid #062141ff' : inputStyle.border, boxShadow: descFocused ? '0 0 0 3px rgba(6,33,65,0.15)' : 'none'}}
+          />
         </div>
 
-        <button type="submit" disabled={loading} style={{
-          padding: '15px', background: '#10b981', color: 'white', border: 'none', borderRadius: '10px',
-          fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginTop: '10px'
-        }}>
+        <button type="submit" disabled={loading} style={{ padding: '15px', background: '#062141ff', color: 'white', border: 'none', borderRadius: '10px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginTop: '10px' }}>
           {loading ? <Loader className="spin" /> : <><Save size={20} /> Confirmar Agendamento</>}
         </button>
 
@@ -206,5 +212,5 @@ export default function NovoAgendamentoUser() {
   );
 }
 
-const labelStyle = { display: 'block', marginBottom: '5px', color: '#64748b', fontSize: '0.9rem' };
+const labelStyle = { display: 'block', marginBottom: '5px', color: '#202020ff', fontSize: '0.9rem' };
 const inputStyle = { width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', backgroundColor: 'white', boxSizing: 'border-box' };

@@ -14,7 +14,7 @@ function AgendamentosView({ agendamentos, setSelectedItem, navigate }) {
       <div style={{ 
         padding: '20px',
             display: 'flex',
-            justifyContent: 'center'
+            justifyContent: 'center',
        }}>
             <div
               onClick={() => setTab(tab === 'pendentes' ? 'resolvidos' : 'pendentes')}
