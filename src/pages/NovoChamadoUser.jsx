@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { app } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Camera, Save, Loader, MapPin, Building2, ArrowLeftCircle } from 'lucide-react';
+import { ArrowLeft, Camera, Save, Loader, MapPin, Building2, ArrowLeftCircle, Image } from 'lucide-react';
 import { enviarNotificacao } from '../utils/notificacoes';
 
 // --- LISTAS DE OPÇÕES ---
@@ -258,11 +258,26 @@ export default function NovoChamadoUser() {
 
         {/* Upload Foto */}
         <div>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '15px', border: '2px dashed #cbd5e1', borderRadius: '10px', color: '#64748b', cursor: 'pointer', justifyContent: 'center' }}>
-            <input type="file" accept="image/*" capture="environment" style={{ display: 'none' }} onChange={(e) => setFoto(e.target.files[0])} />
-            <Camera size={24} />
-            {foto ? <span style={{color: '#051c36ff'}}>{foto.name}</span> : 'Adicionar Evidência'}
-          </label>
+          <label style={labelStyle}>Foto de Evidência (Opcional)</label>
+          {foto ? (
+            <div style={{ padding: '15px', border: '2px solid #062141ff', borderRadius: '10px', backgroundColor: '#ffffffff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ color: '#000000ff', fontWeight: '500', fontSize: '0.75rem' }}>📷 {foto.name}</span>
+              <button type="button" onClick={() => setFoto(null)} style={{ background: 'none', border: 'none', color: '#dc2626', cursor: 'pointer', fontWeight: 'bold' }}>✕</button>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', padding: '10px', border: '2px dashed #cbd5e1', borderRadius: '10px', color: '#64748b', cursor: 'pointer', transition: 'all 0.2s' }}>
+                <input type="file" accept="image/*" capture="environment" style={{ display: 'none' }} onChange={(e) => setFoto(e.target.files[0])} />
+                <Camera size={22} />
+                <span style={{ fontSize: '0.75rem', textAlign: 'center' }}>Tirar Foto</span>
+              </label>
+              <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', padding: '10px', border: '2px dashed #cbd5e1', borderRadius: '10px', color: '#64748b', cursor: 'pointer', transition: 'all 0.2s' }}>
+                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => setFoto(e.target.files[0])} />
+                <Image size={22} />
+                <span style={{ fontSize: '0.75rem', textAlign: 'center' }}>Escolher da Galeria</span>
+              </label>
+            </div>
+          )}
         </div>
 
         <button type="submit" disabled={loading} style={{ padding: '15px', background: '#062141ff', color: 'white', border: 'none', borderRadius: '10px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginTop: '10px' }}>
