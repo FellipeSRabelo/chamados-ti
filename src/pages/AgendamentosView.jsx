@@ -88,15 +88,20 @@ function AgendamentosView({ agendamentos, setSelectedItem, navigate }) {
             cursor: 'pointer' 
           }}>
             <div style={{ flex: 1 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#242424ff' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#242424ff', marginBottom: '8px' }}>
                  <span>{String(item.id_sequencial).padStart(6, '0')}</span>
                  <span>{item.data_abertura.split(' ')[0]}</span>
               </div>
-              <div style={{ fontWeight: '600', color: '#334155', marginBottom: '2px' }}>
+              <div style={{ fontWeight: '600', color: '#334155', marginBottom: '6px', fontSize: '0.95rem' }}>
                 {item.evento || 'Sem evento'}
               </div>
-              <div style={{ textAlign: 'right', fontSize: '0.85rem', fontWeight: 'bold', color: '#222222ff', marginBottom: '4px' }}>
-                 Agendamento
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', fontSize: '0.85rem', color: '#64748b' }}>
+                <div>
+                 <strong>Local:</strong> {item.local || '—'}
+                </div>
+                <div>
+                 <strong>Data de Uso:</strong> {item.data_uso || item.data || '—'}
+                </div>
               </div>
             </div>
           </div>

@@ -88,15 +88,31 @@ function ChamadosView({ chamados, setSelectedItem, navigate }) {
             cursor: 'pointer' 
           }}>
             <div style={{ flex: 1 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#242424ff' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', color: '#242424ff', marginBottom: '8px' }}>
                  <span>{String(item.id_sequencial).padStart(6, '0')}</span>
                  <span>{item.data_abertura.split(' ')[0]}</span>
               </div>
-              <div style={{ fontWeight: '600', color: '#334155', marginBottom: '2px' }}>
-                {item.defeito_desc ? item.defeito_desc.substring(0, 30) + '...' : 'Sem descrição'}
+              <div style={{ fontWeight: '600', color: '#334155', marginBottom: '6px', fontSize: '0.95rem' }}>
+                {item.defeito_desc ? item.defeito_desc.substring(0, 40) + '...' : 'Sem descrição'}
               </div>
-              <div style={{ textAlign: 'right', fontSize: '0.85rem', fontWeight: 'bold', color: '#222222ff', marginBottom: '4px' }}>
-                 Chamado
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', fontSize: '0.85rem', color: '#64748b' }}>
+                <div>
+                  <strong>Local:</strong> {(() => {
+                    const sala = (item.sala || '').trim();
+                    const setor = (item.setor || '').trim();
+                    if (sala && sala.toUpperCase() !== 'N/A' && setor) {
+                      return `${sala} - ${setor}`;
+                    } else if ((!sala || sala.toUpperCase() === 'N/A') && setor) {
+                      return `${setor}`;
+                    } else if (sala && sala.toUpperCase() !== 'N/A') {
+                      return sala;
+                    }
+                    return '—';
+                  })()}
+                </div>
+                <div>
+                  <strong>Equipamento:</strong> {item.equipamento_defeito || item.equipamento || '—'}
+                </div>
               </div>
             </div>
           </div>
