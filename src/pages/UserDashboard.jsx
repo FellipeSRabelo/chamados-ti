@@ -181,15 +181,31 @@ function UserDetailModal({ isOpen, onClose, data }) {
             </div>
           )}
         </div>
-        <div style={{ padding: '10px', overflowY: 'auto', flex: 1, background: '#f3f2edff' }}>
+        <div style={{ padding: '10px', overflowY: 'auto', flex: 1, position: 'relative', background: '#fffefcff' }}>
+          {/* Imagem de fundo com opacidade */}
+          <div style={{ 
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            right: 0, 
+            bottom: 0, 
+            backgroundImage: 'url(/fundo_coments.jpg)', 
+            backgroundSize: 'cover', 
+            backgroundPosition: 'center', 
+            opacity: 0.4,
+            pointerEvents: 'none',
+            zIndex: 0
+          }} />
   
+          {/* Conteúdo com z-index para ficar acima do fundo */}
+          <div style={{ position: 'relative', zIndex: 1 }}>
             {/*<hr style={{ border: '0', borderTop: '1px solid #e2e8f0', margin: '20px 0' }} />*/}
 
-          <h3 style={{ fontSize: '1rem', color: '#1e293b', marginBottom: '15px' }}>Suporte:</h3>
+            <h3 style={{ fontSize: '1rem', color: '#494949ff', marginBottom: '15px' }}>Suporte:</h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {/* Mensagem Legada (Se houver) */}
-            {data.comentario_publico && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {/* Mensagem Legada (Se houver) */}
+              {data.comentario_publico && (
                <div style={{ alignSelf: 'flex-start', background: '#ffffff', padding: '8px 12px', borderRadius: '10px 10px 10px 0', maxWidth: '85%', boxShadow: '0 1px 0.5px rgba(0,0,0,0.13)', lineHeight: '1.3' }}>
                  <small style={{display:'block', color: '#333', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '3px'}}>TI (Mensagem Antiga)</small>
                  {data.comentario_publico}
@@ -207,10 +223,10 @@ function UserDetailModal({ isOpen, onClose, data }) {
                 boxShadow: '2px 2px 4px rgba(0,0,0,0.18)',
                 lineHeight: '1.3',
               }}>
-                <small style={{display:'block', color: msg.autor === 'usuario' ? '#1d1d1dff' : '#252525ff', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '3px'}}>
+                <small style={{display:'block', color: msg.autor === 'usuario' ? '#1d1d1dff' : '#252525ff', fontSize: '0.70rem', fontWeight: 'bold', marginBottom: '3px'}}>
                   {msg.autor === 'usuario' ? 'Você' : 'Suporte TI'} - {msg.data}
                 </small>
-                <div style={{ wordWrap: 'break-word' }}>{msg.texto}</div>
+                <div style={{ wordWrap: 'break-word', fontSize: '0.8rem' }}>{msg.texto}</div>
               </div>
             ))}
             <div ref={chatEndRef} />
@@ -218,6 +234,7 @@ function UserDetailModal({ isOpen, onClose, data }) {
             {historico.length === 0 && !data.comentario_publico && (
               <p style={{ textAlign: 'center', color: '#bac4d3ff', fontSize: '0.9rem' }}>Nenhuma interação ainda.</p>
             )}
+            </div>
           </div>
         </div>
 
@@ -259,8 +276,8 @@ function UserDetailModal({ isOpen, onClose, data }) {
               </button>
             </>
           ) : (
-            <div style={{ textAlign: 'center', color: '#64748b', fontSize: '0.9rem', padding: '10px', background: '#e2e8f0', borderRadius: '8px', width: '100%' }}>
-              {data.is_realizado ? '✅ Chamado finalizado. Não é possível comentar.' : '⏳ Aguarde a resposta do suporte.'}
+            <div style={{ textAlign: 'center', color: '#64748b', fontSize: '0.8rem', padding: '10px', background: '#e2e8f0', borderRadius: '8px', width: '100%' }}>
+              {data.is_realizado ? '✅ Chamado finalizado.' : '⏳ Aguarde a resposta do suporte.'}
             </div>
           )}
         </div>
