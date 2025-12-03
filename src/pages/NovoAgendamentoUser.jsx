@@ -119,8 +119,8 @@ export default function NovoAgendamentoUser() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#062141ff' }}>
-    <div style={{ minHeight: '100vh', backgroundColor: '#f7f7f7ff', padding: '20px', borderTop: '4px solid #062141ff', borderRadius: '20px',}}>
+
+    <div style={{ minHeight: '100vh', backgroundColor: '#f7f7f7ff', padding: '20px', borderRadius: '18px', borderTop: '4px solid #1e293b', marginTop: '4px'}}>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', gap: '10px' }}>
         <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
           <ArrowLeftCircle size={26} color="#1e293b" />
@@ -209,7 +209,6 @@ export default function NovoAgendamentoUser() {
         </button>
 
       </form>
-    </div>
     </div>
   );
 }

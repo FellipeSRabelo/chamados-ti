@@ -335,7 +335,7 @@ export default function UserDashboard() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f3f2f2ff', paddingBottom: '80px', paddingTop: '10px' }}>
+    <div style={{ minHeight: '100vh', borderRadius: '18px', borderTop: '4px solid #1e293b', marginTop: '4px', backgroundColor: '#f3f2f2ff', paddingBottom: '80px', paddingTop: '10px' }}>
       
       {/* LOGO DA ESCOLA */}
     {/*<div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -351,7 +351,7 @@ export default function UserDashboard() {
       <div style={{ background: '#f3f2f2ff', padding: '10px', paddingTop: '20px', position: 'sticky', top: 0, zIndex: 10 }}>
 
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', padding: '0 10px' }}>
            
            {/* ÁREA DO USUÁRIO (COM FOTO) */}
            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -361,7 +361,7 @@ export default function UserDashboard() {
                  src={user.photoURL} 
                  alt="Perfil" 
                  referrerPolicy="no-referrer" // <--- O SEGREDINHO ESTÁ AQUI
-                 style={{ width: '45px', height: '45px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #e2e8f0' }} 
+                 style={{ width: '45px', height: '45px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #1e293b' }} 
                />
              ) : (
                // Opcional: Um círculo com a inicial se não tiver foto
@@ -374,11 +374,13 @@ export default function UserDashboard() {
                <h1 style={{ margin: 0, fontSize: '1.2rem', color: '#1e293b', lineHeight: '1.2' }}>
                  Olá, {user?.displayName?.split(' ')[0] || 'Colaborador'}!
                </h1>
-               <span style={{ fontSize: '0.8rem', color: '#3c434dff' }}>TI - Elisa Andreoli</span>
+               <h1 style={{ margin: 0, fontWeight: '400', fontSize: '0.7rem', color: '#1e293b', lineHeight: '1.2' }}>
+                 {user?.email?.split(' ')[0] || 'Colaborador'}
+               </h1>
              </div>
            </div>
            
-           <div style={{display: 'flex', alignItems: 'center', gap: '15px' }}>
+           <div style={{display: 'flex', alignItems: 'center', gap: '5px' }}>
                {/* SINO DE NOTIFICAÇÕES (MANTENHA IGUAL) */}
                <div className="notification-wrapper" style={{ position: 'relative' }}>
                   <button className="icon-btn" onClick={() => setNotifOpen(!notifOpen)} style={{background: 'none', border: 'none', cursor: 'pointer'}}>
