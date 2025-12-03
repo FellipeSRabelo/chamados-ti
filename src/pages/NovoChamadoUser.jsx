@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { app } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Camera, Save, Loader, MapPin, Building2 } from 'lucide-react';
+import { ArrowLeft, Camera, Save, Loader, MapPin, Building2, ArrowLeftCircle } from 'lucide-react';
 import { enviarNotificacao } from '../utils/notificacoes';
 
 // --- LISTAS DE OPÇÕES ---
@@ -136,14 +136,14 @@ export default function NovoChamadoUser() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f7f7f7ff', padding: '20px' }}>
       
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px', gap: '10px' }}>
-        <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-          <ArrowLeft size={24} color="#1e293b" />
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', gap: '10px' }}>
+        <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer'  }}>
+          <ArrowLeftCircle size={26} color="#1e293b" />
         </button>
-        <h1 style={{ margin: 0, fontSize: '1.5rem', color: '#1e293b' }}>Novo Chamado</h1>
+        <h1 style={{ margin: 0, fontSize: '1.2rem', color: '#1e293b' }}>Novo Chamado</h1>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         
         {/* Tipo de Ocorrência */}
         <div>
@@ -161,13 +161,55 @@ export default function NovoChamadoUser() {
 
         {/* Seleção de Local */}
         <div>
-          <label style={labelStyle}>Onde você está?</label>
+          <label style={labelStyle}></label>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-            <button type="button" onClick={() => setTipoLocal('sala')} style={{ padding: '15px', borderRadius: '10px', border: tipoLocal === 'sala' ? '2px solid #3b82f6' : '1px solid #e2e8f0', backgroundColor: tipoLocal === 'sala' ? '#eff6ff' : 'white', color: tipoLocal === 'sala' ? '#1d4ed8' : '#64748b', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', fontWeight: '600', transition: 'all 0.2s' }}>
-              <MapPin size={24} /> Sala de Aula
+            <button
+              type="button"
+              onClick={() => setTipoLocal('sala')}
+              style={{
+                padding: '12px',
+                borderRadius: '6px',
+                background: 'white',
+                color: '#202020ff',
+                border: 'none',
+                fontWeight: '400',
+                fontSize: '0.90rem',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                transition: 'all 0.2s',
+                boxShadow:
+                  tipoLocal === 'sala'
+                    ? 'inset 0 -2px #292929ff, 0 2px 4px rgba(0,0,0,0.1)'
+                    : '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+            >
+              <MapPin size={20} /> Sala de Aula
             </button>
-            <button type="button" onClick={() => setTipoLocal('setor')} style={{ padding: '15px', borderRadius: '10px', border: tipoLocal === 'setor' ? '2px solid #3b82f6' : '1px solid #e2e8f0', backgroundColor: tipoLocal === 'setor' ? '#eff6ff' : 'white', color: tipoLocal === 'setor' ? '#1d4ed8' : '#64748b', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', fontWeight: '600', transition: 'all 0.2s' }}>
-              <Building2 size={24} /> Administrativo
+            <button
+              type="button"
+              onClick={() => setTipoLocal('setor')}
+              style={{
+                padding: '12px',
+                borderRadius: '6px',
+                background: 'white',
+                color: '#202020ff',
+                border: 'none',
+                fontWeight: '400',
+                fontSize: '0.90rem',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                transition: 'all 0.2s',
+                boxShadow:
+                  tipoLocal === 'setor'
+                    ? 'inset 0 -2px #292929ff, 0 2px 4px rgba(0,0,0,0.1)'
+                    : '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+            >
+              <Building2 size={20} /> Administrativo
             </button>
           </div>
         </div>
@@ -206,7 +248,7 @@ export default function NovoChamadoUser() {
 
         {/* Problema */}
         <div>
-          <label style={labelStyle}>Descrição do Problema</label>
+          <label style={labelStyle}>Descrição da Ocorrência</label>
           <textarea required placeholder="Descreva o que está acontecendo..." rows="4"
             value={formData.problema} onChange={(e) => setFormData({...formData, problema: e.target.value})}
             style={{...inputStyle, resize: 'vertical'}} />
