@@ -352,7 +352,7 @@ export default function UserDashboard() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f3f2f2ff', paddingBottom: '40px', paddingTop: '10px' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f3f2f2ff', paddingBottom: '20px', paddingTop: '10px' }}>
       
       {/* LOGO DA ESCOLA */}
     {/*<div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -508,11 +508,11 @@ export default function UserDashboard() {
         <img 
           src="https://elisaandreoli.com.br/wp-content/uploads/2023/08/logomarca_cea_sem_fundo-1024x367.png" 
           alt="Logomarca da Escola" 
-          style={{ maxWidth: '120px', height: 'auto', opacity: 0.6 }}
+          style={{ maxWidth: '140px', height: 'auto', opacity: 0.6 }}
         />
        </div>
        <div style={{ textAlign: 'center', color: '#a1a1a1ff', fontSize: '0.8rem', marginBottom: '20px' }}>
-        Aplicação Desenvolvida por <br></br><span> <strong>Setor de Tecnologia da Informação<br></br>Colégio Elisa Andreoli</strong></span>
+        Aplicação Desenvolvida por <br></br><span> <strong>Setor de Tecnologia da Informação</strong></span>
         </div>
     </div>
     
