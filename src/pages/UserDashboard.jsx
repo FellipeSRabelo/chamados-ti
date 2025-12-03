@@ -510,7 +510,11 @@ export default function UserDashboard() {
           alt="Logomarca da Escola" 
           style={{ maxWidth: '120px', height: 'auto', opacity: 0.6 }}
         />
-      </div>
+       </div>
+       <div style={{ textAlign: 'center', color: '#a1a1a1ff', fontSize: '0.8rem', marginBottom: '20px' }}>
+        Aplicação Desenvolvida por <br></br><span> <strong>Setor de Tecnologia da Informação<br></br>Colégio Elisa Andreoli</strong></span>
+        </div>
     </div>
+    
   );
 }
