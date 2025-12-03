@@ -266,12 +266,12 @@ export default function NovoChamadoUser() {
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-              <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', padding: '10px', border: '2px dashed #cbd5e1', borderRadius: '10px', color: '#64748b', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', padding: '7px', border: '2px dashed #cbd5e1', borderRadius: '10px', color: '#64748b', cursor: 'pointer', transition: 'all 0.2s' }}>
                 <input type="file" accept="image/*" capture="environment" style={{ display: 'none' }} onChange={(e) => setFoto(e.target.files[0])} />
                 <Camera size={22} />
                 <span style={{ fontSize: '0.75rem', textAlign: 'center' }}>Tirar Foto</span>
               </label>
-              <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', padding: '10px', border: '2px dashed #cbd5e1', borderRadius: '10px', color: '#64748b', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', padding: '7px', border: '2px dashed #cbd5e1', borderRadius: '10px', color: '#64748b', cursor: 'pointer', transition: 'all 0.2s' }}>
                 <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => setFoto(e.target.files[0])} />
                 <Image size={22} />
                 <span style={{ fontSize: '0.75rem', textAlign: 'center' }}>Escolher da Galeria</span>

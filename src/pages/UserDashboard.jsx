@@ -47,10 +47,10 @@ function UserDetailModal({ isOpen, onClose, data }) {
   const statusColor = data.is_realizado ? '#22c55e' : '#f59e0b';
   const statusText = data.is_realizado ? 'Resolvido / Finalizado' : 'Pendente / Em Análise';
 
-  // Regra Anti-Spam
+  // Regras de Bloqueio de Comentário
   const historico = data.historico_conversa || [];
   const ultimaMensagem = historico.length > 0 ? historico[historico.length - 1] : null;
-  const podeComentar = !ultimaMensagem || ultimaMensagem.autor === 'admin';
+  const podeComentar = !data.is_realizado && (!ultimaMensagem || ultimaMensagem.autor === 'admin');
 
   const handleEnviarComentario = async () => {
     if (!novoComentario.trim()) return;
@@ -222,7 +222,7 @@ function UserDetailModal({ isOpen, onClose, data }) {
         </div>
 
         {/* Área de Input */}
-        <div style={{ padding: '12px 15px', borderTop: '1px solid #e2e8f0', background: '#f8fafc', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+        <div style={{ padding: '12px 15px', borderTop: '1px solid #e2e8f0', background: '#f8fafc', display: 'flex', gap: '8px', alignItems: 'center' }}>
           {podeComentar ? (
             <>
               <input 
@@ -230,7 +230,7 @@ function UserDetailModal({ isOpen, onClose, data }) {
                 value={novoComentario}
                 onChange={(e) => setNovoComentario(e.target.value)}
                 placeholder="Escrever mensagem..."
-                style={{ flex: 1, padding: '10px 15px', borderRadius: '20px', border: '1px solid #cbd5e1', background: '#ffffff', fontSize: '0.95rem', outline: 'none', fontFamily: 'inherit' }}
+                style={{ flex: 1, padding: '10px 15px', borderRadius: '20px', border: '1px solid #cbd5e1', background: '#ffffff', fontSize: '0.95rem', outline: 'none', fontFamily: 'inherit', minWidth: 0 }}
               />
               <button 
                 onClick={handleEnviarComentario}
@@ -239,7 +239,7 @@ function UserDetailModal({ isOpen, onClose, data }) {
                   background: novoComentario.trim() ? '#128c7e' : '#ccc', 
                   color: 'white', 
                   border: 'none', 
-                  padding: '8px 12px', 
+                  padding: '0', 
                   borderRadius: '50%', 
                   fontWeight: 'bold', 
                   cursor: novoComentario.trim() ? 'pointer' : 'not-allowed', 
@@ -249,7 +249,10 @@ function UserDetailModal({ isOpen, onClose, data }) {
                   justifyContent: 'center',
                   width: '36px',
                   height: '36px',
-                  fontSize: '18px'
+                  minWidth: '36px',
+                  minHeight: '36px',
+                  fontSize: '18px',
+                  flexShrink: 0
                 }}
               >
                 ➤
@@ -257,7 +260,7 @@ function UserDetailModal({ isOpen, onClose, data }) {
             </>
           ) : (
             <div style={{ textAlign: 'center', color: '#64748b', fontSize: '0.9rem', padding: '10px', background: '#e2e8f0', borderRadius: '8px', width: '100%' }}>
-              ⏳ Aguarde a resposta do suporte.
+              {data.is_realizado ? '✅ Chamado finalizado. Não é possível comentar.' : '⏳ Aguarde a resposta do suporte.'}
             </div>
           )}
         </div>
