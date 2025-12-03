@@ -352,7 +352,7 @@ export default function UserDashboard() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f3f2f2ff', paddingBottom: '80px', paddingTop: '10px' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f3f2f2ff', paddingBottom: '40px', paddingTop: '10px' }}>
       
       {/* LOGO DA ESCOLA */}
     {/*<div style={{ display: 'flex', justifyContent: 'center' }}>
