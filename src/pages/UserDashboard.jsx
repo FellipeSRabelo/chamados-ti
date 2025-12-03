@@ -232,7 +232,7 @@ function UserDetailModal({ isOpen, onClose, data }) {
             <div ref={chatEndRef} />
             
             {historico.length === 0 && !data.comentario_publico && (
-              <p style={{ textAlign: 'center', color: '#bac4d3ff', fontSize: '0.9rem' }}>Nenhuma interação ainda.</p>
+              <p style={{ textAlign: 'center', color: '#8d8d8dff', fontSize: '0.9rem' }}>Nenhuma interação ainda.</p>
             )}
             </div>
           </div>
