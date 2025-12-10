@@ -7,6 +7,8 @@ import {
 } from 'recharts';
 import './Dashboard.css';
 import { Loader } from 'lucide-react';
+import { Bubble } from "@typebot.io/react";
+
 
 const CORES = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658'];
 
@@ -20,6 +22,17 @@ export default function Dashboard() {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   const db = getFirestore(app);
+
+const App = () => {
+  return (
+    <Bubble
+      typebot="my-typebot-ffyrubw"
+      apiHost="https://typebot.io"
+      theme={{ button: { backgroundColor: "0e3558" } }}
+    />
+  );
+};
+
 
   // 1. Busca Dados
   useEffect(() => {
